@@ -19,6 +19,6 @@ namespace Domain.Entities
         public User User { get; set; }        
         
         public int Status { get; set; }
-        public TasksStatus TaskStatus { get; set; }
+        public TasksStatus TasksStatus { get; set; }
     }
 }

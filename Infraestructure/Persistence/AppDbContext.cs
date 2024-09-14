@@ -1,22 +1,18 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Infraestructure.Persistence
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base() { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<User> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<Tasks> Tasks { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<CampaignType> CampaignTypes { get; set; }
-        public DbSet<TasksStatus> TaskStatuses { get; set; }
+        public DbSet<TasksStatus> TaskStatus { get; set; }
         public DbSet<Interaction> Interactions { get; set; }
         public DbSet<InteractionType> InteractionTypes { get; set; }
 
@@ -50,9 +46,9 @@ namespace Infraestructure.Persistence
                 entity.Property(t => t.DueDate)
                       .HasColumnType("date");
                 //Con TasksStatus 
-                entity.HasOne(t => t.TaskStatus)
+                entity.HasOne(t => t.TasksStatus)
                       .WithMany(ts => ts.Tasks)
-                      .HasForeignKey(t => t.TaskID);
+                      .HasForeignKey(t => t.Status);
                 //Con User 
                 entity.HasOne(t => t.User)
                       .WithMany(u => u.Tasks)
@@ -71,8 +67,8 @@ namespace Infraestructure.Persistence
                       .HasMaxLength(25);
                 //Con Task
                 entity.HasMany(ts => ts.Tasks)
-                      .WithOne(t => t.TaskStatus)
-                      .HasForeignKey(t => t.TaskID);
+                      .WithOne(t => t.TasksStatus)
+                      .HasForeignKey(t => t.Status);
             });
             //Project
             modelBuilder.Entity<Project>(entity =>
