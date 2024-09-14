@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class TaskStatus
+    public class TasksStatus
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        
-        //object
+
         public ICollection<Tasks> Tasks { get; set; }
     }
 }

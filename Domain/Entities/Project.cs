@@ -8,12 +8,12 @@ namespace Domain.Entities
 {
     public class Project
     {
-        public Guid ProjectId { get; set; }
+        public Guid ProjectID { get; set; }
         public string ProjectName { get; set; }
-        public int CampaignTypeId {  get; set; }
+        public int CampaignTypeID {  get; set; }
         public CampaignType CampaignType { get; set; }
         
-        public int ClientId { get; set; }
+        public int ClientID { get; set; }
         public Client Client { get; set; }        
         
         public DateTime StartDate { get; set; }

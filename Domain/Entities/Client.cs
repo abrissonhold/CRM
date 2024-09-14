@@ -10,7 +10,7 @@ namespace Domain.Entities
 {
     public class Client
     {
-        public int ClientId { get; set; }
+        public int ClientID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
