@@ -7,6 +7,6 @@ namespace CRM.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-
+         
     }
 }
