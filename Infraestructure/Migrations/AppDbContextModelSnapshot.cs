@@ -38,6 +38,28 @@ namespace Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CampaignTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "SEO"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "PPC"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Social Media"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Email Marketing"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Client", b =>
@@ -121,6 +143,28 @@ namespace Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("InteractionTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Initial Meeting"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Phone Call"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Email"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Presentation Of Results"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Project", b =>
@@ -204,6 +248,33 @@ namespace Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TaskStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Pending"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "In Progress"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Blocked"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Done"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Cancel"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -227,6 +298,38 @@ namespace Infraestructure.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserID = 1,
+                            Email = "jdone@marketing.com",
+                            Name = "Joe Done"
+                        },
+                        new
+                        {
+                            UserID = 2,
+                            Email = "namstrong@marketing.com",
+                            Name = "Nill Amstrong"
+                        },
+                        new
+                        {
+                            UserID = 3,
+                            Email = "mmorales@marketing.com",
+                            Name = "Marlyn Morales"
+                        },
+                        new
+                        {
+                            UserID = 4,
+                            Email = "aorue@marketing.com",
+                            Name = "Anthony Orué"
+                        },
+                        new
+                        {
+                            UserID = 5,
+                            Email = "jfernandez@marketing.com",
+                            Name = "Jazmin Fernandez"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Interaction", b =>

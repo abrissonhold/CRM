@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 
 namespace Infraestructure.Persistence
@@ -34,6 +35,14 @@ namespace Infraestructure.Persistence
                           .WithOne(t => t.User)
                           .HasForeignKey(t => t.AssignedTo);
                 }
+            );
+            modelBuilder.Entity<User>().HasData(
+                new User { UserID = 1, Name = "Joe Done", Email = "jdone@marketing.com" },
+                new User { UserID = 2, Name = "Nill Amstrong", Email = "namstrong@marketing.com" },
+                new User { UserID = 3, Name = "Marlyn Morales", Email = "mmorales@marketing.com"},
+                new User { UserID = 4, Name = "Anthony Orué", Email = "aorue@marketing.com" },
+                new User { UserID = 5, Name = "Jazmin Fernandez", Email = "jfernandez@marketing.com" }
+
             );
 
             // Task
@@ -70,6 +79,13 @@ namespace Infraestructure.Persistence
                       .WithOne(t => t.TasksStatus)
                       .HasForeignKey(t => t.Status);
             });
+            modelBuilder.Entity<TasksStatus>().HasData(
+                new TasksStatus { Id = 1, Name = "Pending" },
+                new TasksStatus { Id = 2, Name = "In Progress" },
+                new TasksStatus { Id = 3, Name = "Blocked" },
+                new TasksStatus { Id = 4, Name = "Done"},
+                new TasksStatus { Id = 5, Name = "Cancel" }
+            );
             //Project
             modelBuilder.Entity<Project>(entity =>
             {
@@ -114,7 +130,6 @@ namespace Infraestructure.Persistence
                       .HasMaxLength(100);
                 entity.Property(c => c.Address)
                       .HasColumnType("varchar(MAX)");
-
                 //Con Project
                 entity.HasMany(c => c.Projects)
                       .WithOne(p => p.Client)
@@ -127,12 +142,18 @@ namespace Infraestructure.Persistence
                 entity.Property(ct => ct.Name)
                       .IsRequired()
                       .HasMaxLength(25);
-
                 //Con Project
                 entity.HasMany(ct => ct.Projects)
                       .WithOne(p => p.CampaignType)
                       .HasForeignKey(p => p.CampaignTypeID);
             });
+            modelBuilder.Entity<CampaignType>().HasData(
+                new CampaignType { Id = 1, Name = "SEO" },
+                new CampaignType { Id = 2, Name = "PPC" },                
+                new CampaignType { Id = 3, Name = "Social Media" },
+                new CampaignType { Id = 4, Name = "Email Marketing" }
+            );
+
             //Interaction 
             modelBuilder.Entity<Interaction>(entity =>
             {
@@ -151,19 +172,24 @@ namespace Infraestructure.Persistence
                 entity.Property(i => i.Notes)
                       .HasColumnType("varchar(MAX)");
             });
-            //Interaction
+            //InteractionType
             modelBuilder.Entity<InteractionType>(entity =>
             {
                 entity.HasKey(it => it.Id);
                 entity.Property(it => it.Name)
                       .IsRequired()
                       .HasMaxLength(25);
-
                 //Con Interaction
                 entity.HasMany(it => it.Interactions)
                       .WithOne(i => i.InteractionType)
                       .HasForeignKey(i => i.InteractionTypeID);
             });
+            modelBuilder.Entity<InteractionType>().HasData(
+                new InteractionType { Id = 1, Name = "Initial Meeting" },
+                new InteractionType { Id = 2, Name = "Phone Call" },
+                new InteractionType { Id = 3, Name = "Email" },
+                new InteractionType { Id = 4, Name = "Presentation Of Results"}
+            );
         }
     }
 }
