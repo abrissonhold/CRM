@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Entities;
+
+namespace Aplication.Response
 {
-    public class Client
+    public class ClientResponse
     {
         public int ClientID { get; set; }
         public string Name { get; set; }
@@ -8,6 +10,6 @@
         public string Phone { get; set; }
         public string Company { get; set; }
         public string Address { get; set; }
-        public ICollection<Project> Projects { get; set; }
+        public ICollection<ProjectResponse> Projects { get; set; }
     }
 }

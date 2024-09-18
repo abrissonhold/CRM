@@ -5,11 +5,11 @@ namespace CRM.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class CampaignTypeController : ControllerBase
+    public class InteractionTypeController : ControllerBase
     {
-        private readonly ICampaignTypeService _services;
+        private readonly IInteractionTypeService _services;
 
-        public CampaignTypeController(ICampaignTypeService services)
+        public InteractionTypeController(IInteractionTypeService services)
         {
             _services = services;
         }

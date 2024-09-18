@@ -1,6 +1,8 @@
+using Aplication.Interfaces;
+using Aplication.UseCase;
 using Infraestructure.Persistence;
+using Infraestructure.Query;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +14,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Mi contexto
-var connectionString = builder.Configuration["ConnectionString"]; 
+var connectionString = builder.Configuration["ConnectionString"];
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
+
+//Inyección de dependencias
+//CampaignType
+builder.Services.AddTransient<ICampaignTypeService, CampaignTypeService>();
+builder.Services.AddTransient<ICampaignTypeQuery, CampaignTypeQuery>();
+
+builder.Services.AddTransient<IInteractionTypeService, InteractionTypeService>();
+builder.Services.AddTransient<IInteractionTypeQuery, InteractionTypeQuery>();
+
+builder.Services.AddTransient<ITasksStatusService, TasksStatusService>();
+builder.Services.AddTransient<ITasksStatusQuery, TasksStatusQuery>();
 
 var app = builder.Build();
 

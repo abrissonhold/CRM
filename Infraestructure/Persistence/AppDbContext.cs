@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 
 namespace Infraestructure.Persistence
@@ -39,7 +38,7 @@ namespace Infraestructure.Persistence
             modelBuilder.Entity<User>().HasData(
                 new User { UserID = 1, Name = "Joe Done", Email = "jdone@marketing.com" },
                 new User { UserID = 2, Name = "Nill Amstrong", Email = "namstrong@marketing.com" },
-                new User { UserID = 3, Name = "Marlyn Morales", Email = "mmorales@marketing.com"},
+                new User { UserID = 3, Name = "Marlyn Morales", Email = "mmorales@marketing.com" },
                 new User { UserID = 4, Name = "Anthony Orué", Email = "aorue@marketing.com" },
                 new User { UserID = 5, Name = "Jazmin Fernandez", Email = "jfernandez@marketing.com" }
 
@@ -83,7 +82,7 @@ namespace Infraestructure.Persistence
                 new TasksStatus { Id = 1, Name = "Pending" },
                 new TasksStatus { Id = 2, Name = "In Progress" },
                 new TasksStatus { Id = 3, Name = "Blocked" },
-                new TasksStatus { Id = 4, Name = "Done"},
+                new TasksStatus { Id = 4, Name = "Done" },
                 new TasksStatus { Id = 5, Name = "Cancel" }
             );
             //Project
@@ -108,8 +107,8 @@ namespace Infraestructure.Persistence
                 //Con Interaction
                 entity.HasMany(p => p.Interactions)
                       .WithOne(c => c.Project)
-                      .HasForeignKey(p => p.ProjectID);  
-                
+                      .HasForeignKey(p => p.ProjectID);
+
                 entity.Property(p => p.StartDate)
                       .HasColumnType("date");
                 entity.Property(p => p.EndDate)
@@ -149,7 +148,7 @@ namespace Infraestructure.Persistence
             });
             modelBuilder.Entity<CampaignType>().HasData(
                 new CampaignType { Id = 1, Name = "SEO" },
-                new CampaignType { Id = 2, Name = "PPC" },                
+                new CampaignType { Id = 2, Name = "PPC" },
                 new CampaignType { Id = 3, Name = "Social Media" },
                 new CampaignType { Id = 4, Name = "Email Marketing" }
             );
@@ -165,8 +164,8 @@ namespace Infraestructure.Persistence
                 //Con InteractionType
                 entity.HasOne(i => i.InteractionType)
                       .WithMany(it => it.Interactions)
-                      .HasForeignKey(i => i.InteractionTypeID); 
-                
+                      .HasForeignKey(i => i.InteractionTypeID);
+
                 entity.Property(i => i.Date)
                       .HasColumnType("date");
                 entity.Property(i => i.Notes)
@@ -188,7 +187,7 @@ namespace Infraestructure.Persistence
                 new InteractionType { Id = 1, Name = "Initial Meeting" },
                 new InteractionType { Id = 2, Name = "Phone Call" },
                 new InteractionType { Id = 3, Name = "Email" },
-                new InteractionType { Id = 4, Name = "Presentation Of Results"}
+                new InteractionType { Id = 4, Name = "Presentation Of Results" }
             );
         }
     }

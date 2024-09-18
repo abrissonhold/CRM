@@ -1,15 +1,16 @@
 ﻿using Aplication.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class CampaignTypeController : ControllerBase
+    public class TaskStatusController : ControllerBase
     {
-        private readonly ICampaignTypeService _services;
+        private readonly ITasksStatusService _services;
 
-        public CampaignTypeController(ICampaignTypeService services)
+        public TaskStatusController(ITasksStatusService services)
         {
             _services = services;
         }
