@@ -10,9 +10,9 @@
         public Project Project { get; set; }
 
         public int AssignedTo { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         public int Status { get; set; }
-        public TasksStatus TasksStatus { get; set; }
+        public TasksStatus? TasksStatus { get; set; }
     }
 }

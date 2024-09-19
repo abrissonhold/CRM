@@ -17,5 +17,9 @@ namespace Infraestructure.Query
         {
             return await _context.InteractionTypes.ToListAsync();
         }
+        public async Task<InteractionType> GetById(int id)
+        {
+            return await _context.InteractionTypes.FindAsync(id);
+        }
     }
 }

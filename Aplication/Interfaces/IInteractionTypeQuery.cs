@@ -4,7 +4,7 @@ namespace Aplication.Interfaces
 {
     public interface IInteractionTypeQuery
     {
-        Task<IEnumerable<InteractionType>> GetAll();
-
+        public Task<IEnumerable<InteractionType>> GetAll();
+        public Task<InteractionType> GetById(int id);
     }
 }

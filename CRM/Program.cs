@@ -26,7 +26,7 @@ builder.Services.AddTransient<ICampaignTypeQuery, CampaignTypeQuery>();
 builder.Services.AddTransient<IInteractionTypeService, InteractionTypeService>();
 builder.Services.AddTransient<IInteractionTypeQuery, InteractionTypeQuery>();
 
-builder.Services.AddTransient<ITasksStatusService, TasksStatusService>();
+builder.Services.AddTransient<ITaskService, TasksStatusService>();
 builder.Services.AddTransient<ITasksStatusQuery, TasksStatusQuery>();
 
 builder.Services.AddTransient<IUserService, UserService>();
@@ -40,6 +40,13 @@ builder.Services.AddTransient<IProjectService, ProjectService>();
 builder.Services.AddTransient<IProjectQuery, ProjectQuery>();
 builder.Services.AddTransient<IProjectCommand, ProjectCommand>();
 
+builder.Services.AddTransient<IInteractionService, InteractionService>();
+builder.Services.AddTransient<IInteractionQuery, InteractionQuery>();
+builder.Services.AddTransient<IInteractionCommand, InteractionCommand>();
+
+builder.Services.AddTransient<ITaskService, TaskService>();
+builder.Services.AddTransient<ITaskQuery, TaskQuery>();
+builder.Services.AddTransient<ITaskCommand, TaskCommand>();
 
 var app = builder.Build();
 

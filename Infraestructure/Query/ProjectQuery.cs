@@ -1,4 +1,5 @@
 ﻿using Aplication.Interfaces;
+using Aplication.Response;
 using Domain.Entities;
 using Infraestructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -36,9 +37,18 @@ namespace Infraestructure.Query
 
         public async Task<Project> GetById(Guid id)
         {
-            var project = _context.Projects.Include(p => p.CampaignType).Include(p => p.Client)
-                                 .FirstOrDefault(p => p.ProjectID == id);
-            return project;
+            var p = _context.Projects
+                .Include(p => p.Tasks)
+                    .ThenInclude(p => p.TasksStatus)
+                .Include(p => p.Tasks)
+                    .ThenInclude(p => p.User)
+                .Include(p => p.Interactions)
+                    .ThenInclude(p => p.InteractionType)
+                .Include(p => p.Client)
+                .Include(p => p.CampaignType)
+                .FirstOrDefault(p => p.ProjectID == id);
+
+            return p;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Aplication.Interfaces
 {
-    public interface ITasksStatusService
+    public interface ITaskStatusService
     {
         Task<List<GenericResponse>> GetAll();
     }

@@ -11,6 +11,6 @@
         public InteractionType InteractionType { get; set; }
 
         public DateTime Date { get; set; }
-        public int Notes { get; set; }
+        public string Notes { get; set; }
     }
 }

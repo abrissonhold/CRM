@@ -2,6 +2,8 @@
 using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
+using Microsoft.VisualBasic;
+using static System.Net.WebRequestMethods;
 
 namespace Aplication.UseCase
 {
@@ -11,14 +13,18 @@ namespace Aplication.UseCase
         private readonly IProjectCommand _command;
         private readonly ICampaignTypeQuery _querycampaigntype;
         private readonly IClientQuery _queryclient;
+        private readonly IInteractionQuery _queryinteraction;
+        private readonly IInteractionTypeQuery _queryinteractiontype;
+        private readonly ITaskQuery _querytask;
 
-
-        public ProjectService(IProjectQuery query, IProjectCommand command, ICampaignTypeQuery querycampaigntype, IClientQuery queryclient)
+        public ProjectService(IProjectQuery query, IProjectCommand command, ICampaignTypeQuery querycampaigntype, IClientQuery queryclient, IInteractionQuery queryinteraction, ITaskQuery querytask)
         {
             _query = query;
             _command = command;
             _querycampaigntype = querycampaigntype;
             _queryclient = queryclient;
+            _querytask = querytask;
+            _queryinteraction = queryinteraction;
         }
 
         public async Task<List<ProjectResponse>> GetAll()
@@ -78,7 +84,6 @@ namespace Aplication.UseCase
             }).ToList();
         }
 
-
         public async Task<ProjectResponse> CreateProject(ProjectRequest pr)
         {
             var campaignType = await _querycampaigntype.GetById(pr.CampaignTypeID);
@@ -123,20 +128,124 @@ namespace Aplication.UseCase
             };
         }
 
-        public Task<ProjectResponseDetail> GetById(Guid id)
+        public async Task<ProjectResponseDetail> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var p = await _query.GetById(id);
+            return new ProjectResponseDetail
+            {
+                project = new ProjectResponse
+                {
+                    ProjectID = p.ProjectID,
+                    ProjectName = p.ProjectName,
+                    CampaignTypeID = p.CampaignTypeID,
+                    ClientID = p.ClientID,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    Client = new ClientResponse
+                    {
+                        ClientID = p.Client.ClientID,
+                        Name = p.Client.Name,
+                        Phone = p.Client.Phone,
+                        Company = p.Client.Company,
+                        Address = p.Client.Address,
+                    },
+                    CampaignType = new GenericResponse
+                    {
+                        Id = p.CampaignType.Id,
+                        Name = p.CampaignType.Name
+                    },
+                },
+                tasks = p.Tasks.Select(t => new TasksResponse
+                {
+                    TaskID = t.TaskID,
+                    Name = t.Name,
+                    DueDate = t.DueDate,
+                    ProjectID = t.ProjectID,
+                    User = {
+                        UserID = t.User.UserID,
+                        Name = t.User.Name,
+                        Email = t.User.Email
+                    },
+                    TasksStatus = {
+                        Id = t.User.UserID,
+                        Name = t.User.Name
+                    },
+                }).ToList(),
+                interactions = p.Interactions.Select(t => new InteractionResponse
+                {
+                    InteractionID = t.InteractionID,
+                    ProjectID = t.ProjectID,
+                    Date = t.Date,
+                    Notes = t.Notes,
+                }
+                ).ToList()
+            };
         }
 
-        public Task AddInteraction(Guid projectId, Interaction interaction)
+        public async Task<InteractionResponse> AddInteraction(Guid projectId, InteractionRequest interaction)
         {
-            throw new NotImplementedException();
+            var p = await _query.GetById(projectId);
+            
+            Domain.Entities.Interaction i = new Domain.Entities.Interaction
+            {
+                //InteractionID = interaction.InteractionID,
+                ProjectID = projectId,
+                Date = interaction.Date,
+                Notes = interaction.Notes,
+                InteractionTypeID = interaction.InteractionTypeID
+            };
+
+            await _command.InsertInteraction(p, i);
+
+      
+            return new InteractionResponse
+            {
+                InteractionID = i.InteractionID,
+                ProjectID = i.ProjectID,
+                Interaction = new GenericResponse{
+                    Id = i.InteractionType.Id,
+                    Name = i.InteractionType.Name
+                },
+                Date = i.Date,
+                Notes = i.Notes,
+            };
         }
 
-        public Task AddTask(Guid projectId, Task task)
+        public async Task<TasksResponse> AddTask(Guid projectId, TasksRequest task)
         {
-            throw new NotImplementedException();
+            var p = await _query.GetById(projectId);
+
+            Tasks t = new Tasks
+            {
+                TaskID = task.TaskID,
+                Name = task.Name,
+                DueDate = task.DueDate,
+                ProjectID = task.ProjectID,
+                AssignedTo = task.AssignedTo,
+                Status = task.Status
+            };
+
+            await _command.InsertTask(p, t);
+            return new TasksResponse
+            {
+                TaskID = t.TaskID,
+                Name = t.Name,
+                DueDate = t.DueDate,
+                ProjectID = t.ProjectID,
+                User = 
+                {
+                        UserID = t.User.UserID,
+                        Name = t.User.Name,
+                        Email = t.User.Email
+                },
+                TasksStatus = 
+                {
+                        Id = t.User.UserID,
+                        Name = t.User.Name
+                },
+            };
         }
+
     }
 }
        

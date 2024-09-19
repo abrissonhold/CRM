@@ -3,6 +3,7 @@ using Aplication.Request;
 using Aplication.Response;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace CRM.Controllers
 {
@@ -39,7 +40,7 @@ namespace CRM.Controllers
             {
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
-            var result = await _services.CreateProject(project, _services.GetProject());
+            var result = await _services.CreateProject(project);
             return new JsonResult(result) { StatusCode = 201 };
         }
 
@@ -53,6 +54,26 @@ namespace CRM.Controllers
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
             var result = await _services.GetById(id);
+            return new JsonResult(result);
+        }
+        [HttpPost("{id}/interactions")]
+        public async Task<IActionResult> AddInteraction(Guid id, InteractionRequest interaction)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiError { Message = "Invalid data" });
+            }
+            var result = await _services.AddInteraction(id, interaction);
+            return new JsonResult(result);
+        }
+        [HttpPost("{id}/tasks")]
+        public async Task<IActionResult> AddTask(Guid id, TasksRequest task)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiError { Message = "Invalid data" });
+            }
+            var result = await _services.AddTask(id, task);
             return new JsonResult(result);
         }
     }
