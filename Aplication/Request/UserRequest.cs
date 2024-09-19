@@ -1,6 +1,6 @@
 ﻿namespace Aplication.Request
 {
-    internal class UserRequest
+    public class UserRequest
     {
     }
 }

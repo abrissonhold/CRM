@@ -28,6 +28,12 @@ builder.Services.AddTransient<IInteractionTypeQuery, InteractionTypeQuery>();
 builder.Services.AddTransient<ITasksStatusService, TasksStatusService>();
 builder.Services.AddTransient<ITasksStatusQuery, TasksStatusQuery>();
 
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IUserQuery, UserQuery>();
+
+builder.Services.AddTransient<IClientService, ClientService>();
+builder.Services.AddTransient<IClientQuery, ClientQuery>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

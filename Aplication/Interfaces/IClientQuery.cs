@@ -1,4 +1,5 @@
 ﻿using Aplication.Response;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Aplication.Interfaces
 {
-    public interface IUserService
+    public interface IClientQuery
     {
-        Task<List<UserResponse>> GetAll();
+        Task<IEnumerable<Client>> GetAll();
     }
 }

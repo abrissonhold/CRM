@@ -15,11 +15,11 @@ namespace Aplication.UseCase
 
         public async Task<List<GenericResponse>> GetAll()
         {
-            List<TasksStatus> TasksStatusType = (List<TasksStatus>)await _query.GetAll();
-            return TasksStatusType.Select(listTasksStatus => new GenericResponse
+            List<TasksStatus> TasksStatus = (List<TasksStatus>)await _query.GetAll();
+            return TasksStatus.Select(TaskStatus => new GenericResponse
             {
-                Id = listTasksStatus.Id,
-                Name = listTasksStatus.Name,
+                Id = TaskStatus.Id,
+                Name = TaskStatus.Name,
             }
             ).ToList();
         }

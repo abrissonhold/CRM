@@ -10,6 +10,5 @@ namespace Aplication.Response
         public string Phone { get; set; }
         public string Company { get; set; }
         public string Address { get; set; }
-        public ICollection<ProjectResponse> Projects { get; set; }
     }
 }

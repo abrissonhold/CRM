@@ -14,8 +14,12 @@ namespace Aplication.Response
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-
-        public ICollection<TasksResponse> Tasks { get; set; }
-        public ICollection<InteractionResponse> Interactions { get; set; }
     }
+
+    public class ProyectResponseDetail
+    {
+        public ProjectResponse Proyect {  get; set; }
+        public List<TasksResponse> Tasks { get; set; }
+        public List<InteractionResponse> Interactions { get; set; }
+    } 
 }
