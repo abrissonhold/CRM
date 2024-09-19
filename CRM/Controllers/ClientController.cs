@@ -1,9 +1,7 @@
 ﻿using Aplication.Interfaces;
 using Aplication.Request;
-using Aplication.UseCase;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CRM.Controllers
 {
@@ -17,12 +15,14 @@ namespace CRM.Controllers
         {
             _services = services;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var result = await _services.GetAll();
             return new JsonResult(result);
         }
+
         [HttpPost]
         [ProducesResponseType(typeof(JsonResult), 200)]
         [ProducesResponseType(typeof(BadRequest), 404)]
@@ -36,10 +36,5 @@ namespace CRM.Controllers
             return new JsonResult(result);
         }
 
-
-    }        
-    class ApiError : ModelStateDictionary
-        {
-            public string Message { get; set; }
-        }
+    }
 }

@@ -1,5 +1,4 @@
 ﻿using Aplication.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers

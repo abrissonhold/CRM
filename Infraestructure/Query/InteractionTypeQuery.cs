@@ -15,7 +15,7 @@ namespace Infraestructure.Query
         }
         public async Task<IEnumerable<InteractionType>> GetAll()
         {
-            return await _context.InteractionTypes.ToListAsync(); 
+            return await _context.InteractionTypes.ToListAsync();
         }
     }
 }

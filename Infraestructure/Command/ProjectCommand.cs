@@ -4,18 +4,18 @@ using Infraestructure.Persistence;
 
 namespace Infraestructure.Command
 {
-    public class ClientCommand : IClientCommand
+    public class ProjectCommand : IProjectCommand
     {
         private readonly AppDbContext _context;
 
-        public ClientCommand(AppDbContext context)
+        public ProjectCommand(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task InsertClient(Client client)
+        public async Task InsertProject(Project project)
         {
-            _context.Clients.Add(client);
+            _context.Projects.Add(project);
             await _context.SaveChangesAsync();
         }
 

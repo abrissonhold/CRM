@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Aplication.Response
+﻿namespace Aplication.Response
 {
     public class ClientResponse
     {

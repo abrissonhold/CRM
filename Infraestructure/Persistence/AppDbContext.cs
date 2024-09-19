@@ -61,7 +61,7 @@ namespace Infraestructure.Persistence
                 entity.HasOne(t => t.User)
                       .WithMany(u => u.Tasks)
                       .HasForeignKey(t => t.AssignedTo);
-                //Con Proyect
+                //Con Project
                 entity.HasOne(t => t.Project)
                       .WithMany(p => p.Tasks)
                       .HasForeignKey(t => t.ProjectID);

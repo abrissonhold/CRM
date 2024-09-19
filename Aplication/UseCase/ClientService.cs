@@ -2,14 +2,6 @@
 using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Aplication.UseCase
 {
@@ -50,7 +42,7 @@ namespace Aplication.UseCase
                 Address = client.Address
             };
             await _command.InsertClient(c);
-            return  client;
+            return client;
         }
     }
 }

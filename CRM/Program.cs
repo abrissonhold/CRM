@@ -36,6 +36,11 @@ builder.Services.AddTransient<IClientService, ClientService>();
 builder.Services.AddTransient<IClientQuery, ClientQuery>();
 builder.Services.AddTransient<IClientCommand, ClientCommand>();
 
+builder.Services.AddTransient<IProjectService, ProjectService>();
+builder.Services.AddTransient<IProjectQuery, ProjectQuery>();
+builder.Services.AddTransient<IProjectCommand, ProjectCommand>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
