@@ -1,15 +1,11 @@
-﻿using Aplication.Response;
-using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Aplication.Request;
+using Aplication.Response;
 
 namespace Aplication.Interfaces
 {
     public interface IClientService
     { 
-        Task<List<ClientResponse>> GetAll();
+        public Task<List<ClientResponse>> GetAll();
+        public Task<ClientRequest> CreateClient(ClientRequest client);
     }
 }

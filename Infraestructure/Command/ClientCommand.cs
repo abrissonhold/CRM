@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.Command
 {
-    internal class ClientCommand :IClientCommand
+    public class ClientCommand :IClientCommand
     {
         private readonly AppDbContext _context;
 

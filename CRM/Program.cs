@@ -1,5 +1,6 @@
 using Aplication.Interfaces;
 using Aplication.UseCase;
+using Infraestructure.Command;
 using Infraestructure.Persistence;
 using Infraestructure.Query;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ builder.Services.AddTransient<IUserQuery, UserQuery>();
 
 builder.Services.AddTransient<IClientService, ClientService>();
 builder.Services.AddTransient<IClientQuery, ClientQuery>();
+builder.Services.AddTransient<IClientCommand, ClientCommand>();
 
 var app = builder.Build();
 
