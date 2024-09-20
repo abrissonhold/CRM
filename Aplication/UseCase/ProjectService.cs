@@ -16,15 +16,22 @@ namespace Aplication.UseCase
         private readonly IInteractionQuery _queryinteraction;
         private readonly IInteractionTypeQuery _queryinteractiontype;
         private readonly ITaskQuery _querytask;
+        private readonly IUserQuery _queryuser;
+        private readonly ITasksStatusQuery _querytaskstatus;
 
-        public ProjectService(IProjectQuery query, IProjectCommand command, ICampaignTypeQuery querycampaigntype, IClientQuery queryclient, IInteractionQuery queryinteraction, ITaskQuery querytask)
+        public ProjectService(IProjectQuery query, IProjectCommand command, ICampaignTypeQuery querycampaigntype, 
+            IClientQuery queryclient, IInteractionQuery queryinteraction, IInteractionTypeQuery queryinteractiontype, 
+            ITaskQuery querytask, IUserQuery queryuser, ITasksStatusQuery querytaskstatus)
         {
             _query = query;
             _command = command;
             _querycampaigntype = querycampaigntype;
             _queryclient = queryclient;
-            _querytask = querytask;
             _queryinteraction = queryinteraction;
+            _queryinteractiontype = queryinteractiontype;
+            _querytask = querytask;
+            _queryuser = queryuser;
+            _querytaskstatus = querytaskstatus;
         }
 
         public async Task<List<ProjectResponse>> GetAll()
@@ -185,10 +192,10 @@ namespace Aplication.UseCase
         public async Task<InteractionResponse> AddInteraction(Guid projectId, InteractionRequest interaction)
         {
             var p = await _query.GetById(projectId);
-            
+            var it = await _queryinteractiontype.GetById(interaction.InteractionTypeID);
+
             Domain.Entities.Interaction i = new Domain.Entities.Interaction
             {
-                //InteractionID = interaction.InteractionID,
                 ProjectID = projectId,
                 Date = interaction.Date,
                 Notes = interaction.Notes,
@@ -197,14 +204,13 @@ namespace Aplication.UseCase
 
             await _command.InsertInteraction(p, i);
 
-      
             return new InteractionResponse
             {
                 InteractionID = i.InteractionID,
-                ProjectID = i.ProjectID,
+                ProjectID = p.ProjectID,
                 Interaction = new GenericResponse{
-                    Id = i.InteractionType.Id,
-                    Name = i.InteractionType.Name
+                    Id = it.Id,
+                    Name = it.Name
                 },
                 Date = i.Date,
                 Notes = i.Notes,
@@ -214,15 +220,16 @@ namespace Aplication.UseCase
         public async Task<TasksResponse> AddTask(Guid projectId, TasksRequest task)
         {
             var p = await _query.GetById(projectId);
+            var user = await _queryuser.GetById(task.AssignedTo);
+            var ts = await _querytaskstatus.GetById(task.Status);
 
             Tasks t = new Tasks
             {
-                TaskID = task.TaskID,
                 Name = task.Name,
                 DueDate = task.DueDate,
-                ProjectID = task.ProjectID,
+                ProjectID = projectId,
                 AssignedTo = task.AssignedTo,
-                Status = task.Status
+                Status = ts.Id,
             };
 
             await _command.InsertTask(p, t);
@@ -234,14 +241,14 @@ namespace Aplication.UseCase
                 ProjectID = t.ProjectID,
                 User = 
                 {
-                        UserID = t.User.UserID,
-                        Name = t.User.Name,
-                        Email = t.User.Email
+                    UserID = user.UserID,
+                    Name = user.Name,
+                    Email = user.Email
                 },
                 TasksStatus = 
                 {
-                        Id = t.User.UserID,
-                        Name = t.User.Name
+                        Id = ts.Id,
+                        Name = ts.Name
                 },
             };
         }

@@ -17,5 +17,10 @@ namespace Infraestructure.Query
         {
             return await _context.TaskStatus.ToListAsync();
         }
+
+        public async Task<TasksStatus> GetById(int id)
+        {
+            return await _context.TaskStatus.FindAsync(id);
+        }
     }
 }

@@ -18,5 +18,9 @@ namespace Infraestructure.Query
         {
             return await _context.Users.ToListAsync();
         }
+        public async Task<User> GetById(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
     }
 }

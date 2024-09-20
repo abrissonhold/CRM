@@ -23,5 +23,6 @@ namespace Aplication.UseCase
             }
             ).ToList();
         }
+
     }
 }

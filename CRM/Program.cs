@@ -48,6 +48,7 @@ builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddTransient<ITaskQuery, TaskQuery>();
 builder.Services.AddTransient<ITaskCommand, TaskCommand>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
