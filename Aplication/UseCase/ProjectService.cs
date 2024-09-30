@@ -2,8 +2,6 @@
 using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
-using Microsoft.VisualBasic;
-using static System.Net.WebRequestMethods;
 
 namespace Aplication.UseCase
 {
@@ -19,8 +17,8 @@ namespace Aplication.UseCase
         private readonly IUserQuery _queryuser;
         private readonly ITasksStatusQuery _querytaskstatus;
 
-        public ProjectService(IProjectQuery query, IProjectCommand command, ICampaignTypeQuery querycampaigntype, 
-            IClientQuery queryclient, IInteractionQuery queryinteraction, IInteractionTypeQuery queryinteractiontype, 
+        public ProjectService(IProjectQuery query, IProjectCommand command, ICampaignTypeQuery querycampaigntype,
+            IClientQuery queryclient, IInteractionQuery queryinteraction, IInteractionTypeQuery queryinteractiontype,
             ITaskQuery querytask, IUserQuery queryuser, ITasksStatusQuery querytaskstatus)
         {
             _query = query;
@@ -208,7 +206,8 @@ namespace Aplication.UseCase
             {
                 InteractionID = i.InteractionID,
                 ProjectID = p.ProjectID,
-                Interaction = new GenericResponse{
+                Interaction = new GenericResponse
+                {
                     Id = it.Id,
                     Name = it.Name
                 },
@@ -239,13 +238,13 @@ namespace Aplication.UseCase
                 Name = t.Name,
                 DueDate = t.DueDate,
                 ProjectID = t.ProjectID,
-                User = 
+                User =
                 {
                     UserID = user.UserID,
                     Name = user.Name,
                     Email = user.Email
                 },
-                TasksStatus = 
+                TasksStatus =
                 {
                         Id = ts.Id,
                         Name = ts.Name
@@ -255,4 +254,4 @@ namespace Aplication.UseCase
 
     }
 }
-       
+

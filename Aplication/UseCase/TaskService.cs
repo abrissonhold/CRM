@@ -15,33 +15,48 @@ namespace Aplication.UseCase
             _query = query;
         }
 
-        public Task<TasksRequest> CreateTask(TasksRequest task)
+        public async Task<List<TasksResponse>> GetAll()
         {
-            throw new NotImplementedException();
+            List<Tasks> list = (List<Tasks>)await _query.GetAll();
+            return list.Select(t => new TasksResponse
+            {
+                TaskID = t.TaskID,
+                Name = t.Name,
+                DueDate = t.DueDate,
+                ProjectID = t.ProjectID,
+                User = t.User != null ? new UserResponse
+                {
+                    UserID = t.User.UserID,
+                    Name = t.User.Name,
+                    Email = t.User.Email
+                } : null,
+                TasksStatus =
+                {
+                    Id = t.TasksStatus.Id,
+                    Name = t.TasksStatus.Name
+                }
+            }).ToList();
         }
 
-        public async Task<List<TasksResponse>> GetAll()
+        public async Task<TasksRequest> UpdateTask(TasksRequest tasksRequest)
+        {
+            Tasks task = await _query.Tasks.FirstOrDefaultAsync(t => t.TaskID == tasksRequest.TaskID);
+
+            if (task == null)
             {
-                List<Tasks> list = (List<Tasks>)await _query.GetAll();
-                return list.Select(list => new TasksResponse
-                {
-                    TaskID = list.TaskID,
-                    Name = list.Name,
-                    DueDate = list.DueDate,
-                    ProjectID = list.ProjectID,
-                    User = {
-                    UserID = list.User.UserID,
-                    Name = list.User.Name,
-                    Email = list.User.Email
-                },
-                    TasksStatus = {
-                    Id = list.TasksStatus.Id,
-                    Name = list.TasksStatus.Name
-                }
-                }).ToList();
+                throw new Exception("Task not found");
             }
 
-        }
+            // Actualizamos los campos de la tarea
+            task.Name = tasksRequest.Name;
+            task.DueDate = tasksRequest.DueDate;
+            task.AssignedTo = tasksRequest.AssignedTo;
+            task.Status = tasksRequest.Status;
 
+            _dbContext.Tasks.Update(task);
+            await _dbContext.SaveChangesAsync();
+        }
     }
+
+}
 

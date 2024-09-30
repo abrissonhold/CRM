@@ -2,7 +2,6 @@
 using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Aplication.UseCase
 {
@@ -21,7 +20,7 @@ namespace Aplication.UseCase
         }
 
         public async Task<List<InteractionResponse>> GetAll()
-         {
+        {
             List<Interaction> listInteraction = (List<Interaction>)await _query.GetAll();
             return listInteraction.Select(listInteraction => new InteractionResponse
             {
@@ -31,6 +30,6 @@ namespace Aplication.UseCase
                 Date = listInteraction.Date,
                 Notes = listInteraction.Notes
             }).ToList();
-         }
+        }
     }
 }
