@@ -50,7 +50,8 @@ namespace Infraestructure.Persistence
                 entity.HasKey(t => t.TaskID);
                 entity.Property(t => t.Name)
                       .HasColumnType("nvarchar")
-                      .IsRequired();
+                      .IsRequired()
+                      .HasMaxLength(255);
                 entity.Property(t => t.DueDate)
                       .HasColumnType("date");
                 //Con TasksStatus 

@@ -3,7 +3,6 @@ using Aplication.Request;
 using Aplication.Response;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace CRM.Controllers
 {
@@ -17,13 +16,6 @@ namespace CRM.Controllers
         {
             _services = services;
         }
-
-        /*[HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _services.GetAll();
-            return new JsonResult(result);
-        }*/
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects(string? name, int? campaignType, int? clientId, int offset = 0, int size = 10)
@@ -40,6 +32,11 @@ namespace CRM.Controllers
             {
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
+            var existingProject = await _services.GetByName(project.ProjectName);
+            if (existingProject != null)
+            {
+                return Conflict(new ApiError { Message = "Project with the same name already exists" });
+            }
             var result = await _services.CreateProject(project);
             return new JsonResult(result) { StatusCode = 201 };
         }
@@ -54,6 +51,10 @@ namespace CRM.Controllers
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
             var result = await _services.GetById(id);
+            if (result == null)
+            {
+                return NotFound(new ApiError { Message = "Project not found" });
+            }
             return new JsonResult(result);
         }
         [HttpPost("{id}/interactions")]

@@ -1,6 +1,7 @@
 ﻿using Aplication.Interfaces;
 using Domain.Entities;
 using Infraestructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Command
 {
@@ -19,5 +20,22 @@ namespace Infraestructure.Command
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateTask(Tasks task)
+        {
+            var existingTask = await _context.Tasks.FindAsync(task.TaskID);
+
+            if (existingTask != null)
+            {
+                existingTask.Name = task.Name;
+                existingTask.DueDate = task.DueDate;
+                existingTask.AssignedTo = task.AssignedTo;
+                existingTask.Status = task.Status;
+                existingTask.ProjectID = task.ProjectID;
+
+                _context.Tasks.Update(existingTask);
+
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

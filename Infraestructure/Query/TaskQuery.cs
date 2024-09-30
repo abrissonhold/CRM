@@ -15,11 +15,17 @@ namespace Infraestructure.Query
         }
         public async Task<IEnumerable<Tasks>> GetAll()
         {
-            return await _context.Tasks.ToListAsync();
+            return await _context.Tasks
+                                .Include(t => t.User)
+                                .Include(t => t.TasksStatus)
+                                .ToListAsync();
         }
         public async Task<Tasks> GetById(Guid id)
         {
-            return await _context.Tasks.FindAsync(id);
+            return await _context.Tasks
+                                .Include(t => t.User)
+                                .Include(t => t.TasksStatus)
+                                .FirstOrDefaultAsync(t => t.TaskID == id);
         }
     }
 }
