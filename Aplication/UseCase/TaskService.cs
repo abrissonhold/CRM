@@ -38,23 +38,28 @@ namespace Aplication.UseCase
             }).ToList();
         }
 
-        public async Task<TasksRequest> UpdateTask(TasksRequest tasksRequest)
+        public async Task<TasksResponse> UpdateTask(TasksRequest tasksRequest)
         {
-            Tasks task = await _query.Tasks.FirstOrDefaultAsync(t => t.TaskID == tasksRequest.TaskID);
+            Tasks task = await _query.GetById(tasksRequest.Id);
 
             if (task == null)
             {
                 throw new Exception("Task not found");
             }
 
-            // Actualizamos los campos de la tarea
             task.Name = tasksRequest.Name;
             task.DueDate = tasksRequest.DueDate;
             task.AssignedTo = tasksRequest.AssignedTo;
             task.Status = tasksRequest.Status;
 
-            _dbContext.Tasks.Update(task);
-            await _dbContext.SaveChangesAsync();
+            return new TasksResponse
+            {
+                TaskID = task.TaskID,
+                Name = task.Name,
+                DueDate = task.DueDate,
+                ProjectID = task.ProjectID,
+
+            };
         }
     }
 

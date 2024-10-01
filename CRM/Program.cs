@@ -26,7 +26,7 @@ builder.Services.AddTransient<ICampaignTypeQuery, CampaignTypeQuery>();
 builder.Services.AddTransient<IInteractionTypeService, InteractionTypeService>();
 builder.Services.AddTransient<IInteractionTypeQuery, InteractionTypeQuery>();
 
-builder.Services.AddTransient<ITaskService, TasksStatusService>();
+builder.Services.AddTransient<ITaskStatusService, TasksStatusService>();
 builder.Services.AddTransient<ITasksStatusQuery, TasksStatusQuery>();
 
 builder.Services.AddTransient<IUserService, UserService>();

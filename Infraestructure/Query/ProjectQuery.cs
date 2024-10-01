@@ -49,5 +49,21 @@ namespace Infraestructure.Query
 
             return p;
         }
+
+        public async Task<Project> GetByName(string name)
+        {
+            var p = _context.Projects
+                .Include(p => p.Tasks)
+                    .ThenInclude(p => p.TasksStatus)
+                .Include(p => p.Tasks)
+                    .ThenInclude(p => p.User)
+                .Include(p => p.Interactions)
+                    .ThenInclude(p => p.InteractionType)
+                .Include(p => p.Client)
+                .Include(p => p.CampaignType)
+                .FirstOrDefault(p => p.ProjectName == name);
+
+            return p;
+        }
     }
 }

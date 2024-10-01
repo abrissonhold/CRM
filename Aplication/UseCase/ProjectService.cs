@@ -2,6 +2,7 @@
 using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
+using System.Xml.Linq;
 
 namespace Aplication.UseCase
 {
@@ -91,9 +92,14 @@ namespace Aplication.UseCase
 
         public async Task<ProjectResponse> CreateProject(ProjectRequest pr)
         {
+            var existingProject = await _query.GetByName(pr.ProjectName);
+            if (existingProject != null)
+            {
+                throw new Exception("Ya existe un proyecto con ese nombre");
+            }
             var campaignType = await _querycampaigntype.GetById(pr.CampaignTypeID);
-
             var client = await _queryclient.GetById(pr.ClientID);
+
             if (campaignType == null || client == null)
             {
                 throw new Exception("Datos mal ingresados");
@@ -150,6 +156,7 @@ namespace Aplication.UseCase
                     {
                         ClientID = p.Client.ClientID,
                         Name = p.Client.Name,
+                        Email = p.Client.Email,
                         Phone = p.Client.Phone,
                         Company = p.Client.Company,
                         Address = p.Client.Address,
@@ -192,7 +199,7 @@ namespace Aplication.UseCase
             var p = await _query.GetById(projectId);
             var it = await _queryinteractiontype.GetById(interaction.InteractionTypeID);
 
-            Domain.Entities.Interaction i = new Domain.Entities.Interaction
+            Interaction i = new Interaction
             {
                 ProjectID = projectId,
                 Date = interaction.Date,
@@ -252,6 +259,114 @@ namespace Aplication.UseCase
             };
         }
 
+        public async Task<ProjectResponseDetail> GetByName(string name)
+        {
+            var project = await _query.GetByName(name);
+
+            if (project == null)
+            {
+                return null;
+            }
+            return new ProjectResponseDetail
+            {
+                project = new ProjectResponse
+                {
+                    ProjectID = project.ProjectID,
+                    ProjectName = project.ProjectName,
+                    CampaignTypeID = project.CampaignTypeID,
+                    ClientID = project.ClientID,
+                    StartDate = project.StartDate,
+                    EndDate = project.EndDate,
+                    Client = new ClientResponse
+                    {
+                        ClientID = project.Client.ClientID,
+                        Name = project.Client.Name,
+                        Phone = project.Client.Phone,
+                        Company = project.Client.Company,
+                        Address = project.Client.Address,
+                    },
+                    CampaignType = new GenericResponse
+                    {
+                        Id = project.CampaignType.Id,
+                        Name = project.CampaignType.Name
+                    }
+                },
+                tasks = project.Tasks.Select(t => new TasksResponse
+                {
+                    TaskID = t.TaskID,
+                    Name = t.Name,
+                    DueDate = t.DueDate,
+                    ProjectID = t.ProjectID,
+                    User = new UserResponse
+                    {
+                        UserID = t.User.UserID,
+                        Name = t.User.Name,
+                        Email = t.User.Email
+                    },
+                    TasksStatus = new GenericResponse
+                    {
+                        Id = t.TasksStatus.Id,
+                        Name = t.TasksStatus.Name
+                    }
+                }).ToList(),
+                interactions = project.Interactions.Select(i => new InteractionResponse
+                {
+                    InteractionID = i.InteractionID,
+                    ProjectID = i.ProjectID,
+                    Date = i.Date,
+                    Notes = i.Notes,
+                }).ToList()
+            };
+        }
+
+        public async Task<TasksResponse> UpdateTask(Guid projectId, Guid taskId, TasksRequest taskRequest)
+        {
+            var p = await _query.GetById(projectId);
+            var user = await _queryuser.GetById(taskRequest.AssignedTo);
+            var ts = await _querytaskstatus.GetById(taskRequest.Status);
+
+            if (p == null)
+            {
+                throw new Exception("Proyecto no encontrado");
+            }
+
+            var task = p.Tasks.FirstOrDefault(t => t.TaskID == taskId);
+
+            if (task == null)
+            {
+                throw new Exception("Tarea no encontrada");
+            }
+            if (user == null || ts == null)
+            {
+                throw new Exception("Datos inválidos para la tarea");
+            }
+
+            task.Name = taskRequest.Name;
+            task.DueDate = taskRequest.DueDate;
+            task.AssignedTo = taskRequest.AssignedTo;
+            task.Status = taskRequest.Status;
+
+            await _command.UpdateTask(p, task);
+
+            return new TasksResponse
+            {
+                TaskID = task.TaskID,
+                Name = task.Name,
+                DueDate = task.DueDate,
+                ProjectID = task.ProjectID,
+                User = new UserResponse
+                {
+                    UserID = user.UserID,
+                    Name = user.Name,
+                    Email = user.Email
+                },
+                TasksStatus = new GenericResponse
+                {
+                    Id = ts.Id,
+                    Name = ts.Name
+                }
+            };
+        }
     }
 }
 

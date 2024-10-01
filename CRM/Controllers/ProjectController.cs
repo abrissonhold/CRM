@@ -21,7 +21,7 @@ namespace CRM.Controllers
         public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects(string? name, int? campaignType, int? clientId, int offset = 0, int size = 10)
         {
             List<ProjectResponse> result = (List<ProjectResponse>)await _services.GetProjects(name, campaignType, clientId, offset, size);
-            return new JsonResult(result) { StatusCode = 200 };
+            return Ok(result);
         }
 
         [HttpPost]
@@ -35,14 +35,13 @@ namespace CRM.Controllers
             var existingProject = await _services.GetByName(project.ProjectName);
             if (existingProject != null)
             {
-                return Conflict(new ApiError { Message = "Project with the same name already exists" });
+                return BadRequest(new ApiError { Message = "Project with the same name already exists" });
             }
             var result = await _services.CreateProject(project);
             return new JsonResult(result) { StatusCode = 201 };
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(JsonResult), 200)]
         [ProducesResponseType(typeof(BadRequest), 404)]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -55,8 +54,9 @@ namespace CRM.Controllers
             {
                 return NotFound(new ApiError { Message = "Project not found" });
             }
-            return new JsonResult(result);
+            return Ok(result);
         }
+
         [HttpPost("{id}/interactions")]
         public async Task<IActionResult> AddInteraction(Guid id, InteractionRequest interaction)
         {
@@ -65,8 +65,9 @@ namespace CRM.Controllers
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
             var result = await _services.AddInteraction(id, interaction);
-            return new JsonResult(result);
+            return new JsonResult(result) { StatusCode = 200 } ;
         }
+
         [HttpPost("{id}/tasks")]
         public async Task<IActionResult> AddTask(Guid id, TasksRequest task)
         {
@@ -75,7 +76,24 @@ namespace CRM.Controllers
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
             var result = await _services.AddTask(id, task);
-            return new JsonResult(result);
+            return new JsonResult(result) { StatusCode = 200 };
+        }
+
+        [HttpPatch("{id}/tasks/{taskId}")]
+        public async Task<IActionResult> UpdateTask(Guid id, Guid taskId, TasksRequest task)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiError { Message = "Invalid data" });
+            }
+
+            var result = await _services.UpdateTask(id, taskId, task);
+            if (result == null)
+            {
+                return NotFound(new ApiError { Message = "Task not found" });
+            }
+
+            return Ok(result);
         }
     }
 }

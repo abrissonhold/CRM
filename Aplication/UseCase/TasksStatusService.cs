@@ -5,18 +5,13 @@ using Domain.Entities;
 
 namespace Aplication.UseCase
 {
-    public class TasksStatusService : ITaskService
+    public class TasksStatusService : ITaskStatusService
     {
         private readonly ITasksStatusQuery _query;
 
         public TasksStatusService(ITasksStatusQuery query)
         {
             _query = query;
-        }
-
-        public Task<TasksRequest> CreateTask(TasksRequest tasksRequest)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<List<GenericResponse>> GetAll()
@@ -28,11 +23,6 @@ namespace Aplication.UseCase
                 Name = TaskStatus.Name,
             }
             ).ToList();
-        }
-
-        Task<List<TasksResponse>> ITaskService.GetAll()
-        {
-            throw new NotImplementedException();
         }
     }
 }
