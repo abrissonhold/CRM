@@ -128,6 +128,7 @@ namespace Aplication.UseCase
                     ClientID = client.ClientID,
                     Name = client.Name,
                     Phone = client.Phone,
+                    Email = client.Email,
                     Company = client.Company,
                     Address = client.Address,
                 },
@@ -245,13 +246,13 @@ namespace Aplication.UseCase
                 Name = t.Name,
                 DueDate = t.DueDate,
                 ProjectID = t.ProjectID,
-                User =
+                User = new UserResponse
                 {
                     UserID = user.UserID,
                     Name = user.Name,
                     Email = user.Email
                 },
-                TasksStatus =
+                TasksStatus = new GenericResponse
                 {
                         Id = ts.Id,
                         Name = ts.Name

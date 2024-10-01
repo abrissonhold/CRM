@@ -7,9 +7,9 @@ namespace CRM.Controllers
     [ApiController]
     public class TaskStatusController : ControllerBase
     {
-        private readonly ITaskService _services;
+        private readonly ITaskStatusService _services;
 
-        public TaskStatusController(ITaskService services)
+        public TaskStatusController(ITaskStatusService services)
         {
             _services = services;
         }
