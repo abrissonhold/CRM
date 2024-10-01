@@ -6,7 +6,7 @@ namespace Aplication.Interfaces
     public interface ITaskService
     {
         public Task<List<TasksResponse>> GetAll();
-        public Task<TasksRequest> UpdateTask(TasksRequest tasksRequest);
+        public Task<TasksResponse> UpdateTask(TasksRequest tasksRequest);
 
     }
 }

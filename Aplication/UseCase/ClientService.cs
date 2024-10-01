@@ -34,7 +34,6 @@ namespace Aplication.UseCase
         {
             Client c = new Client
             {
-                ClientID = client.ClientID,
                 Name = client.Name,
                 Email = client.Email,
                 Phone = client.Phone,

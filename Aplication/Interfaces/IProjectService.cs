@@ -12,5 +12,6 @@ namespace Aplication.Interfaces
         public Task<ProjectResponseDetail> GetByName(string Name);
         public Task<InteractionResponse> AddInteraction(Guid projectId, InteractionRequest interaction);
         public Task<TasksResponse> AddTask(Guid projectId, TasksRequest task);
+        public Task<TasksResponse> UpdateTask(Guid projectId, Guid taskId, TasksRequest taskRequest);
     }
 }
