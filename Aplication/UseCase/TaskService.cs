@@ -37,7 +37,7 @@ namespace Aplication.UseCase
                 }
             }).ToList();
         }
-
+        
         public async Task<TasksResponse> UpdateTask(Guid Idtask, TasksRequest tasksRequest)
         {
             Tasks task = await _query.GetById(Idtask);
