@@ -38,9 +38,9 @@ namespace Aplication.UseCase
             }).ToList();
         }
 
-        public async Task<TasksResponse> UpdateTask(TasksRequest tasksRequest)
+        public async Task<TasksResponse> UpdateTask(Guid Idtask, TasksRequest tasksRequest)
         {
-            Tasks task = await _query.GetById(tasksRequest.Id);
+            Tasks task = await _query.GetById(Idtask);
 
             if (task == null)
             {
@@ -58,7 +58,6 @@ namespace Aplication.UseCase
                 Name = task.Name,
                 DueDate = task.DueDate,
                 ProjectID = task.ProjectID,
-
             };
         }
     }
