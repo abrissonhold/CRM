@@ -2,7 +2,6 @@
 using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
-using System.Threading.Tasks;
 
 namespace Aplication.UseCase
 {
@@ -37,7 +36,7 @@ namespace Aplication.UseCase
                 }
             }).ToList();
         }
-        
+
         public async Task<TasksResponse> UpdateTask(Guid Idtask, TasksRequest tasksRequest)
         {
             Tasks task = await _query.GetById(Idtask);

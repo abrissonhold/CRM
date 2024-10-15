@@ -17,6 +17,7 @@ namespace CRM.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(JsonResult), 200)]
         public async Task<IActionResult> GetAll()
         {
             var result = await _services.GetAll();

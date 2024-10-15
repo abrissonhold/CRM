@@ -18,18 +18,20 @@ namespace Infraestructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // User
+
             modelBuilder.Entity<User>(entity =>
                 {
                     entity.HasKey(u => u.UserID);
+                    entity.Property(u => u.UserID).ValueGeneratedOnAdd();
                     entity.Property(u => u.Name)
                           .HasColumnType("nvarchar")
                           .IsRequired()
                           .HasMaxLength(255);
                     entity.Property(u => u.Email)
+                          .HasColumnType("nvarchar")
                           .IsRequired()
                           .HasMaxLength(255);
-                    //con Task
+
                     entity.HasMany(u => u.Tasks)
                           .WithOne(t => t.User)
                           .HasForeignKey(t => t.AssignedTo);
@@ -44,25 +46,25 @@ namespace Infraestructure.Persistence
 
             );
 
-            // Task
             modelBuilder.Entity<Tasks>(entity =>
             {
                 entity.HasKey(t => t.TaskID);
+                entity.Property(t => t.TaskID).ValueGeneratedOnAdd();
                 entity.Property(t => t.Name)
                       .HasColumnType("nvarchar")
                       .IsRequired()
                       .HasMaxLength(255);
                 entity.Property(t => t.DueDate)
                       .HasColumnType("date");
-                //Con TasksStatus 
+
                 entity.HasOne(t => t.TasksStatus)
                       .WithMany(ts => ts.Tasks)
                       .HasForeignKey(t => t.Status);
-                //Con User 
+
                 entity.HasOne(t => t.User)
                       .WithMany(u => u.Tasks)
                       .HasForeignKey(t => t.AssignedTo);
-                //Con Project
+
                 entity.HasOne(t => t.Project)
                       .WithMany(p => p.Tasks)
                       .HasForeignKey(t => t.ProjectID);
@@ -71,6 +73,7 @@ namespace Infraestructure.Persistence
             modelBuilder.Entity<TasksStatus>(entity =>
             {
                 entity.HasKey(ts => ts.Id);
+                entity.Property(ts => ts.Id).ValueGeneratedOnAdd();
                 entity.Property(ts => ts.Name)
                       .IsRequired()
                       .HasMaxLength(25);

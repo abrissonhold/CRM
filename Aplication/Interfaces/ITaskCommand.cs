@@ -1,5 +1,4 @@
-﻿using Aplication.Request;
-using Domain.Entities;
+﻿using Domain.Entities;
 
 namespace Aplication.Interfaces
 {

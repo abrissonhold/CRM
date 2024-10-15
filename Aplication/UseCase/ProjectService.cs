@@ -2,7 +2,6 @@
 using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
-using System.Xml.Linq;
 
 namespace Aplication.UseCase
 {
@@ -254,8 +253,8 @@ namespace Aplication.UseCase
                 },
                 TasksStatus = new GenericResponse
                 {
-                        Id = ts.Id,
-                        Name = ts.Name
+                    Id = ts.Id,
+                    Name = ts.Name
                 },
             };
         }

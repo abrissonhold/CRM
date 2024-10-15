@@ -21,7 +21,7 @@ namespace CRM.Controllers
         public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects(string? name, int? campaignType, int? clientId, int offset = 0, int size = 10)
         {
             List<ProjectResponse> result = (List<ProjectResponse>)await _services.GetProjects(name, campaignType, clientId, offset, size);
-            return Ok(result);
+            return new JsonResult(result);
         }
 
         [HttpPost]
@@ -42,6 +42,7 @@ namespace CRM.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(JsonResult), 200)]
         [ProducesResponseType(typeof(BadRequest), 404)]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -54,10 +55,10 @@ namespace CRM.Controllers
             {
                 return NotFound(new ApiError { Message = "Project not found" });
             }
-            return Ok(result);
+            return new JsonResult(result);
         }
 
-        [HttpPost("{id}/interactions")]
+        [HttpPatch("{id}/interactions")]
         public async Task<IActionResult> AddInteraction(Guid id, InteractionRequest interaction)
         {
             if (!ModelState.IsValid)
@@ -65,10 +66,10 @@ namespace CRM.Controllers
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
             var result = await _services.AddInteraction(id, interaction);
-            return new JsonResult(result) { StatusCode = 200 } ;
+            return new JsonResult(result) { StatusCode = 200 };
         }
 
-        [HttpPost("{id}/tasks")]
+        [HttpPatch("{id}/tasks")]
         public async Task<IActionResult> AddTask(Guid id, TasksRequest task)
         {
             if (!ModelState.IsValid)
@@ -93,7 +94,7 @@ namespace CRM.Controllers
                 return NotFound(new ApiError { Message = "Task not found" });
             }
 
-            return Ok(result);
+            return new JsonResult(result);
         }
     }
 }
