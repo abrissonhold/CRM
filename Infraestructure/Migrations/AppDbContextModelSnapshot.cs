@@ -101,9 +101,9 @@ namespace Infraestructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Interaction", b =>
                 {
-                    b.Property<Guid>("InteractionID")
+                    b.Property<string>("InteractionID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("date");
@@ -115,8 +115,9 @@ namespace Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(MAX)");
 
-                    b.Property<Guid>("ProjectID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProjectID")
+                        .IsRequired()
+                        .HasColumnType("char(36)");
 
                     b.HasKey("InteractionID");
 
@@ -169,9 +170,9 @@ namespace Infraestructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Project", b =>
                 {
-                    b.Property<Guid>("ProjectID")
+                    b.Property<string>("ProjectID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("CampaignTypeID")
                         .HasColumnType("int");
@@ -199,41 +200,7 @@ namespace Infraestructure.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Tasks", b =>
-                {
-                    b.Property<Guid>("TaskID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AssignedTo")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar");
-
-                    b.Property<Guid>("ProjectID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("TaskID");
-
-                    b.HasIndex("AssignedTo");
-
-                    b.HasIndex("ProjectID");
-
-                    b.HasIndex("Status");
-
-                    b.ToTable("Tasks");
-                });
-
-            modelBuilder.Entity("Domain.Entities.TasksStatus", b =>
+            modelBuilder.Entity("Domain.Entities.TaskStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -244,7 +211,7 @@ namespace Infraestructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("varchar");
 
                     b.HasKey("Id");
 
@@ -278,6 +245,41 @@ namespace Infraestructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.Tasks", b =>
+                {
+                    b.Property<string>("TaskID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("AssignedTo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("ProjectID")
+                        .IsRequired()
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("TaskID");
+
+                    b.HasIndex("AssignedTo");
+
+                    b.HasIndex("ProjectID");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Tasks");
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Property<int>("UserID")
@@ -289,7 +291,7 @@ namespace Infraestructure.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -385,7 +387,7 @@ namespace Infraestructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.TasksStatus", "TasksStatus")
+                    b.HasOne("Domain.Entities.TaskStatus", "TasksStatus")
                         .WithMany("Tasks")
                         .HasForeignKey("Status")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -420,7 +422,7 @@ namespace Infraestructure.Migrations
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("Domain.Entities.TasksStatus", b =>
+            modelBuilder.Entity("Domain.Entities.TaskStatus", b =>
                 {
                     b.Navigation("Tasks");
                 });

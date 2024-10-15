@@ -12,13 +12,13 @@ namespace Infraestructure.Persistence
         public DbSet<Tasks> Tasks { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<CampaignType> CampaignTypes { get; set; }
-        public DbSet<TasksStatus> TaskStatus { get; set; }
+        public DbSet<Domain.Entities.TaskStatus> TaskStatus { get; set; }
         public DbSet<Interaction> Interactions { get; set; }
         public DbSet<InteractionType> InteractionTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            // Users
             modelBuilder.Entity<User>(entity =>
                 {
                     entity.HasKey(u => u.UserID);
@@ -46,16 +46,17 @@ namespace Infraestructure.Persistence
 
             );
 
+            //Tasks
             modelBuilder.Entity<Tasks>(entity =>
             {
                 entity.HasKey(t => t.TaskID);
-                entity.Property(t => t.TaskID).ValueGeneratedOnAdd();
+                entity.Property(t => t.TaskID).ValueGeneratedOnAdd().HasColumnType("char(36)");
                 entity.Property(t => t.Name)
                       .HasColumnType("nvarchar")
                       .IsRequired()
                       .HasMaxLength(255);
                 entity.Property(t => t.DueDate)
-                      .HasColumnType("date");
+                      .HasColumnType("datetime");
 
                 entity.HasOne(t => t.TasksStatus)
                       .WithMany(ts => ts.Tasks)
@@ -69,46 +70,51 @@ namespace Infraestructure.Persistence
                       .WithMany(p => p.Tasks)
                       .HasForeignKey(t => t.ProjectID);
             });
-            //TasksStatus
-            modelBuilder.Entity<TasksStatus>(entity =>
+
+            //TaskStatus
+            modelBuilder.Entity<Domain.Entities.TaskStatus>(entity =>
             {
                 entity.HasKey(ts => ts.Id);
                 entity.Property(ts => ts.Id).ValueGeneratedOnAdd();
                 entity.Property(ts => ts.Name)
                       .IsRequired()
+                      .HasColumnType("varchar")
                       .HasMaxLength(25);
-                //Con Task
+                
                 entity.HasMany(ts => ts.Tasks)
                       .WithOne(t => t.TasksStatus)
                       .HasForeignKey(t => t.Status);
             });
-            modelBuilder.Entity<TasksStatus>().HasData(
-                new TasksStatus { Id = 1, Name = "Pending" },
-                new TasksStatus { Id = 2, Name = "In Progress" },
-                new TasksStatus { Id = 3, Name = "Blocked" },
-                new TasksStatus { Id = 4, Name = "Done" },
-                new TasksStatus { Id = 5, Name = "Cancel" }
+            modelBuilder.Entity<Domain.Entities.TaskStatus>().HasData(
+                new Domain.Entities.TaskStatus { Id = 1, Name = "Pending" },
+                new Domain.Entities.TaskStatus { Id = 2, Name = "In Progress" },
+                new Domain.Entities.TaskStatus { Id = 3, Name = "Blocked" },
+                new Domain.Entities.TaskStatus { Id = 4, Name = "Done" },
+                new Domain.Entities.TaskStatus { Id = 5, Name = "Cancel" }
             );
-            //Project
+
+            //Projects
             modelBuilder.Entity<Project>(entity =>
             {
                 entity.HasKey(p => p.ProjectID);
+                entity.Property(t => t.ProjectID).ValueGeneratedOnAdd().HasColumnType("char(36)");
+
                 entity.Property(p => p.ProjectName)
                       .IsRequired()
                       .HasMaxLength(255);
-                //Con CampaignType 
+                                
                 entity.HasOne(p => p.CampaignType)
                       .WithMany(ct => ct.Projects)
                       .HasForeignKey(p => p.CampaignTypeID);
-                //Con Client 
+               
                 entity.HasOne(p => p.Client)
                       .WithMany(c => c.Projects)
                       .HasForeignKey(p => p.ClientID);
-                //Con Task
+
                 entity.HasMany(p => p.Tasks)
                       .WithOne(c => c.Project)
                       .HasForeignKey(p => p.ProjectID);
-                //Con Interaction
+
                 entity.HasMany(p => p.Interactions)
                       .WithOne(c => c.Project)
                       .HasForeignKey(p => p.ProjectID);
@@ -118,6 +124,7 @@ namespace Infraestructure.Persistence
                 entity.Property(p => p.EndDate)
                       .HasColumnType("date");
             });
+
             //Client
             modelBuilder.Entity<Client>(entity =>
             {
@@ -133,11 +140,12 @@ namespace Infraestructure.Persistence
                       .HasMaxLength(100);
                 entity.Property(c => c.Address)
                       .HasColumnType("varchar(MAX)");
-                //Con Project
+                
                 entity.HasMany(c => c.Projects)
                       .WithOne(p => p.Client)
                       .HasForeignKey(p => p.ClientID);
             });
+
             //CampaignType
             modelBuilder.Entity<CampaignType>(entity =>
             {
@@ -145,7 +153,7 @@ namespace Infraestructure.Persistence
                 entity.Property(ct => ct.Name)
                       .IsRequired()
                       .HasMaxLength(25);
-                //Con Project
+                
                 entity.HasMany(ct => ct.Projects)
                       .WithOne(p => p.CampaignType)
                       .HasForeignKey(p => p.CampaignTypeID);
@@ -161,11 +169,12 @@ namespace Infraestructure.Persistence
             modelBuilder.Entity<Interaction>(entity =>
             {
                 entity.HasKey(i => i.InteractionID);
-                //Con Project
+                entity.Property(t => t.InteractionID).ValueGeneratedOnAdd().HasColumnType("char(36)");
+
                 entity.HasOne(i => i.Project)
                       .WithMany(p => p.Interactions)
                       .HasForeignKey(i => i.ProjectID);
-                //Con InteractionType
+
                 entity.HasOne(i => i.InteractionType)
                       .WithMany(it => it.Interactions)
                       .HasForeignKey(i => i.InteractionTypeID);
@@ -175,6 +184,7 @@ namespace Infraestructure.Persistence
                 entity.Property(i => i.Notes)
                       .HasColumnType("varchar(MAX)");
             });
+
             //InteractionType
             modelBuilder.Entity<InteractionType>(entity =>
             {

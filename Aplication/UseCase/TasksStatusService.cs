@@ -15,7 +15,7 @@ namespace Aplication.UseCase
 
         public async Task<List<GenericResponse>> GetAll()
         {
-            List<TasksStatus> TasksStatus = (List<TasksStatus>)await _query.GetAll();
+            List<Domain.Entities.TaskStatus> TasksStatus = (List<Domain.Entities.TaskStatus>)await _query.GetAll();
             return TasksStatus.Select(TaskStatus => new GenericResponse
             {
                 Id = TaskStatus.Id,

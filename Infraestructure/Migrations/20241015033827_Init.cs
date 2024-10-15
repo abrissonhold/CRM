@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -61,7 +62,7 @@ namespace Infraestructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
+                    Name = table.Column<string>(type: "varchar(25)", maxLength: 25, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,7 +87,7 @@ namespace Infraestructure.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    ProjectID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProjectID = table.Column<string>(type: "char(36)", nullable: false),
                     ProjectName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CampaignTypeID = table.Column<int>(type: "int", nullable: false),
                     ClientID = table.Column<int>(type: "int", nullable: false),
@@ -114,8 +115,8 @@ namespace Infraestructure.Migrations
                 name: "Interactions",
                 columns: table => new
                 {
-                    InteractionID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProjectID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InteractionID = table.Column<string>(type: "char(36)", nullable: false),
+                    ProjectID = table.Column<string>(type: "char(36)", nullable: false),
                     InteractionTypeID = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: false),
                     Notes = table.Column<string>(type: "varchar(MAX)", nullable: false)
@@ -141,10 +142,10 @@ namespace Infraestructure.Migrations
                 name: "Tasks",
                 columns: table => new
                 {
-                    TaskID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TaskID = table.Column<string>(type: "char(36)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    DueDate = table.Column<DateTime>(type: "date", nullable: false),
-                    ProjectID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ProjectID = table.Column<string>(type: "char(36)", nullable: false),
                     AssignedTo = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },

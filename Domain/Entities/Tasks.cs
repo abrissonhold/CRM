@@ -13,6 +13,6 @@
         public User? User { get; set; }
 
         public int Status { get; set; }
-        public TasksStatus? TasksStatus { get; set; }
+        public TaskStatus? TasksStatus { get; set; }
     }
 }

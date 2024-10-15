@@ -13,12 +13,12 @@ namespace Infraestructure.Query
         {
             _context = context;
         }
-        public async Task<IEnumerable<TasksStatus>> GetAll()
+        public async Task<IEnumerable<Domain.Entities.TaskStatus>> GetAll()
         {
             return await _context.TaskStatus.ToListAsync();
         }
 
-        public async Task<TasksStatus> GetById(int id)
+        public async Task<Domain.Entities.TaskStatus> GetById(int id)
         {
             return await _context.TaskStatus.FindAsync(id);
         }
