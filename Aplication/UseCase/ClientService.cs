@@ -30,7 +30,7 @@ namespace Aplication.UseCase
             }
             ).ToList();
         }
-        public async Task<ClientRequest> CreateClient(ClientRequest client)
+        public async Task<ClientResponse> CreateClient(ClientRequest client)
         {
             Client c = new Client
             {
@@ -41,7 +41,15 @@ namespace Aplication.UseCase
                 Address = client.Address
             };
             await _command.InsertClient(c);
-            return client;
+            return new ClientResponse
+            {
+                ClientID = c.ClientID,
+                Name = c.Name,
+                Email = c.Email,
+                Phone = c.Phone,
+                Company = c.Company,
+                Address = c.Address
+            };
         }
     }
 }

@@ -6,6 +6,6 @@ namespace Aplication.Interfaces
     public interface IClientService
     {
         public Task<List<ClientResponse>> GetAll();
-        public Task<ClientRequest> CreateClient(ClientRequest client);
+        public Task<ClientResponse> CreateClient(ClientRequest client);
     }
 }

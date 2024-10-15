@@ -14,11 +14,6 @@ namespace Aplication.UseCase
             _query = query;
         }
 
-        public Task<InteractionRequest> CreateInteraction(InteractionRequest interactionRequest)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<InteractionResponse>> GetAll()
         {
             List<Interaction> listInteraction = (List<Interaction>)await _query.GetAll();

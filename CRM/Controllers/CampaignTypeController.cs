@@ -14,10 +14,11 @@ namespace CRM.Controllers
             _services = services;
         }
         [HttpGet]
+        [ProducesResponseType(typeof(JsonResult), 200)]
         public async Task<IActionResult> GetCampaignTypes()
         {
             var result = await _services.GetAll();
-            return new JsonResult(result) { StatusCode = 200 };
+            return new JsonResult(result);
         }
     }
 }

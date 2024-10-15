@@ -59,6 +59,7 @@ namespace CRM.Controllers
         }
 
         [HttpPatch("{id}/interactions")]
+        [ProducesResponseType(typeof(JsonResult), 201)]
         public async Task<IActionResult> AddInteraction(Guid id, InteractionRequest interaction)
         {
             if (!ModelState.IsValid)
@@ -66,10 +67,11 @@ namespace CRM.Controllers
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
             var result = await _services.AddInteraction(id, interaction);
-            return new JsonResult(result) { StatusCode = 200 };
+            return new JsonResult(result);
         }
 
         [HttpPatch("{id}/tasks")]
+        [ProducesResponseType(typeof(JsonResult), 201)]
         public async Task<IActionResult> AddTask(Guid id, TasksRequest task)
         {
             if (!ModelState.IsValid)
@@ -77,10 +79,11 @@ namespace CRM.Controllers
                 return BadRequest(new ApiError { Message = "Invalid data" });
             }
             var result = await _services.AddTask(id, task);
-            return new JsonResult(result) { StatusCode = 200 };
+            return new JsonResult(result);
         }
 
         [HttpPatch("{id}/tasks/{taskId}")]
+        [ProducesResponseType(typeof(JsonResult), 201)]
         public async Task<IActionResult> UpdateTask(Guid id, Guid taskId, TasksRequest task)
         {
             if (!ModelState.IsValid)
