@@ -89,7 +89,7 @@ namespace Aplication.UseCase
             }).ToList();
         }
 
-        public async Task<ProjectResponse> CreateProject(ProjectRequest pr) 
+        public async Task<ProjectResponse> CreateProject(ProjectRequest pr)
         {
             var existingProject = await _query.GetByName(pr.ProjectName);
             if (existingProject != null)
@@ -174,7 +174,7 @@ namespace Aplication.UseCase
                     DueDate = t.DueDate,
                     ProjectID = t.ProjectID,
                     User = new UserResponse
-                    { 
+                    {
                         UserID = t.User.UserID,
                         Name = t.User.Name,
                         Email = t.User.Email

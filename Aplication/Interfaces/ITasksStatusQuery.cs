@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Aplication.Interfaces
+﻿namespace Aplication.Interfaces
 {
     public interface ITasksStatusQuery
     {

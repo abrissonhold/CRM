@@ -80,7 +80,7 @@ namespace Infraestructure.Persistence
                       .IsRequired()
                       .HasColumnType("varchar")
                       .HasMaxLength(25);
-                
+
                 entity.HasMany(ts => ts.Tasks)
                       .WithOne(t => t.TasksStatus)
                       .HasForeignKey(t => t.Status);
@@ -102,11 +102,11 @@ namespace Infraestructure.Persistence
                 entity.Property(p => p.ProjectName)
                       .IsRequired()
                       .HasMaxLength(255);
-                                
+
                 entity.HasOne(p => p.CampaignType)
                       .WithMany(ct => ct.Projects)
                       .HasForeignKey(p => p.CampaignTypeID);
-               
+
                 entity.HasOne(p => p.Client)
                       .WithMany(c => c.Projects)
                       .HasForeignKey(p => p.ClientID);
@@ -120,10 +120,27 @@ namespace Infraestructure.Persistence
                       .HasForeignKey(p => p.ProjectID);
 
                 entity.Property(p => p.StartDate)
-                      .HasColumnType("date");
+                      .HasColumnType("datetime");
                 entity.Property(p => p.EndDate)
-                      .HasColumnType("date");
+                      .HasColumnType("datetime");
             });
+            modelBuilder.Entity<Project>().HasData(
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Optimización SEO", CampaignTypeID = 1, ClientID = 1, StartDate = DateTime.Parse("2024-10-01"), EndDate = DateTime.Parse("2024-10-31") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Desarrollo WEB", CampaignTypeID = 2, ClientID = 1, StartDate = DateTime.Parse("2024-11-01"), EndDate = DateTime.Parse("2024-12-01") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Estrategia PPC", CampaignTypeID = 2, ClientID = 3, StartDate = DateTime.Parse("2024-10-05"), EndDate = DateTime.Parse("2024-11-05") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Campaña Redes Sociales", CampaignTypeID = 3, ClientID = 2, StartDate = DateTime.Parse("2024-09-01"), EndDate = DateTime.Parse("2024-09-30") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Campaña Email Marketing", CampaignTypeID = 4, ClientID = 4, StartDate = DateTime.Parse("2024-10-10"), EndDate = DateTime.Parse("2024-11-10") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Redesign Web", CampaignTypeID = 1, ClientID = 1, StartDate = DateTime.Parse("2024-01-10"), EndDate = DateTime.Parse("2024-02-20") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "SEO Campaign", CampaignTypeID = 2, ClientID = 2, StartDate = DateTime.Parse("2024-03-01"), EndDate = DateTime.Parse("2024-04-15") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Social Media Strategy", CampaignTypeID = 3, ClientID = 3, StartDate = DateTime.Parse("2024-05-10"), EndDate = DateTime.Parse("2024-06-10") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Email Automation", CampaignTypeID = 4, ClientID = 4, StartDate = DateTime.Parse("2024-07-15"), EndDate = DateTime.Parse("2024-08-20") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "PPC Advertising", CampaignTypeID = 2, ClientID = 5, StartDate = DateTime.Parse("2024-09-01"), EndDate = DateTime.Parse("2024-10-15") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Lead Generation Campaign", CampaignTypeID = 1, ClientID = 1, StartDate = DateTime.Parse("2024-11-10"), EndDate = DateTime.Parse("2024-12-25") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Market Research", CampaignTypeID = 3, ClientID = 2, StartDate = DateTime.Parse("2024-01-10"), EndDate = DateTime.Parse("2024-03-05") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Rebranding", CampaignTypeID = 4, ClientID = 3, StartDate = DateTime.Parse("2024-04-10"), EndDate = DateTime.Parse("2024-05-25") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Content Marketing", CampaignTypeID = 1, ClientID = 4, StartDate = DateTime.Parse("2024-06-05"), EndDate = DateTime.Parse("2024-07-30") },
+                new Project { ProjectID = Guid.NewGuid(), ProjectName = "Mobile App Development", CampaignTypeID = 2, ClientID = 5, StartDate = DateTime.Parse("2024-08-15"), EndDate = DateTime.Parse("2024-09-25") }
+            );
 
             //Client
             modelBuilder.Entity<Client>(entity =>
@@ -140,11 +157,19 @@ namespace Infraestructure.Persistence
                       .HasMaxLength(100);
                 entity.Property(c => c.Address)
                       .HasColumnType("varchar(MAX)");
-                
+
                 entity.HasMany(c => c.Projects)
                       .WithOne(p => p.Client)
                       .HasForeignKey(p => p.ClientID);
             });
+            modelBuilder.Entity<Client>().HasData(
+                new Client { ClientID = 1, Name = "Ignacio García", Email = "igarcia@company.com", Phone = "123456789", Company = "Marketing Co.", Address = "Calle Falsa 123" },
+                new Client { ClientID = 2, Name = "Luciana Pérez", Email = "lperez@company.com", Phone = "987654321", Company = "Redes Global", Address = "Avenida Real 456" },
+                new Client { ClientID = 3, Name = "Maximiliano Sosa", Email = "msosa@company.com", Phone = "123123123", Company = "SEO Experts", Address = "Boulevard Principal 789" },
+                new Client { ClientID = 4, Name = "Marta Ramírez", Email = "mramirez@company.com", Phone = "456456456", Company = "MediaPlus", Address = "Calle Secundaria 321" },
+                new Client { ClientID = 5, Name = "Ramiro López", Email = "rlopez@company.com", Phone = "654654654", Company = "PPC Boosters", Address = "Camino Real 654" }
+            );
+
 
             //CampaignType
             modelBuilder.Entity<CampaignType>(entity =>
@@ -153,7 +178,7 @@ namespace Infraestructure.Persistence
                 entity.Property(ct => ct.Name)
                       .IsRequired()
                       .HasMaxLength(25);
-                
+
                 entity.HasMany(ct => ct.Projects)
                       .WithOne(p => p.CampaignType)
                       .HasForeignKey(p => p.CampaignTypeID);

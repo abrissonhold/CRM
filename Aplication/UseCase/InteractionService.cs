@@ -1,5 +1,4 @@
 ﻿using Aplication.Interfaces;
-using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
 
@@ -20,9 +19,10 @@ namespace Aplication.UseCase
             return listInteraction.Select(listInteraction => new InteractionResponse
             {
                 InteractionID = listInteraction.InteractionID,
-                Interaction = new GenericResponse {
-                Id = listInteraction.InteractionType.Id,
-                Name = listInteraction.InteractionType.Name
+                Interaction = new GenericResponse
+                {
+                    Id = listInteraction.InteractionType.Id,
+                    Name = listInteraction.InteractionType.Name
                 },
                 Date = listInteraction.Date,
                 Notes = listInteraction.Notes

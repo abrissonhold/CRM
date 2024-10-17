@@ -1,5 +1,4 @@
-﻿using Aplication.Request;
-using Aplication.Response;
+﻿using Aplication.Response;
 
 namespace Aplication.Interfaces
 {
