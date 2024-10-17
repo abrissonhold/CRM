@@ -7,19 +7,30 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configuración de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://127.0.0.1:5501") 
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 
+// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Configuración de Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Mi contexto
+// Configuración del contexto de base de datos
 var connectionString = builder.Configuration["ConnectionString"];
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 
-//Inyección de dependencias
-//CampaignType
+// Inyección de dependencias
 builder.Services.AddTransient<ICampaignTypeService, CampaignTypeService>();
 builder.Services.AddTransient<ICampaignTypeQuery, CampaignTypeQuery>();
 
@@ -48,10 +59,9 @@ builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddTransient<ITaskQuery, TaskQuery>();
 builder.Services.AddTransient<ITaskCommand, TaskCommand>();
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Habilitar Swagger en entorno de desarrollo
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -59,6 +69,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Habilitar CORS
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
 

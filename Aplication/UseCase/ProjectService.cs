@@ -61,7 +61,7 @@ namespace Aplication.UseCase
             ).ToList();
         }
 
-        public async Task<IEnumerable<ProjectResponse>> GetProjects(string name, int? campaignType, int? clientId, int offset, int size)
+        public async Task<IEnumerable<ProjectResponse>> GetProjects(string? name, int? campaignType, int? clientId, int offset, int size)
         {
             List<Project> projects = (List<Project>)await _query.GetProjects(name, campaignType, clientId, offset, size);
             return projects.Select(pr => new ProjectResponse
@@ -89,7 +89,7 @@ namespace Aplication.UseCase
             }).ToList();
         }
 
-        public async Task<ProjectResponse> CreateProject(ProjectRequest pr)
+        public async Task<ProjectResponse> CreateProject(ProjectRequest pr) 
         {
             var existingProject = await _query.GetByName(pr.ProjectName);
             if (existingProject != null)
@@ -167,28 +167,34 @@ namespace Aplication.UseCase
                         Name = p.CampaignType.Name
                     },
                 },
-                tasks = p.Tasks.Select(t => new TasksResponse
+                tasks = p.Tasks.Select(static t => new TasksResponse
                 {
                     TaskID = t.TaskID,
                     Name = t.Name,
                     DueDate = t.DueDate,
                     ProjectID = t.ProjectID,
-                    User = {
+                    User = new UserResponse
+                    { 
                         UserID = t.User.UserID,
                         Name = t.User.Name,
                         Email = t.User.Email
                     },
-                    TasksStatus = {
-                        Id = t.User.UserID,
-                        Name = t.User.Name
+                    TasksStatus = new GenericResponse
+                    {
+                        Id = t.TasksStatus.Id,
+                        Name = t.TasksStatus.Name
                     },
                 }).ToList(),
-                interactions = p.Interactions.Select(t => new InteractionResponse
+                interactions = p.Interactions.Select(i => new InteractionResponse
                 {
-                    InteractionID = t.InteractionID,
-                    ProjectID = t.ProjectID,
-                    Date = t.Date,
-                    Notes = t.Notes,
+                    InteractionID = i.InteractionID,
+                    Interaction = new GenericResponse
+                    {
+                        Id = i.InteractionType.Id,
+                        Name = i.InteractionType.Name
+                    },
+                    Date = i.Date,
+                    Notes = i.Notes,
                 }
                 ).ToList()
             };
@@ -212,7 +218,6 @@ namespace Aplication.UseCase
             return new InteractionResponse
             {
                 InteractionID = i.InteractionID,
-                ProjectID = p.ProjectID,
                 Interaction = new GenericResponse
                 {
                     Id = it.Id,
@@ -312,7 +317,11 @@ namespace Aplication.UseCase
                 interactions = project.Interactions.Select(i => new InteractionResponse
                 {
                     InteractionID = i.InteractionID,
-                    ProjectID = i.ProjectID,
+                    Interaction = new GenericResponse
+                    {
+                        Id = i.InteractionType.Id,
+                        Name = i.InteractionType.Name
+                    },
                     Date = i.Date,
                     Notes = i.Notes,
                 }).ToList()

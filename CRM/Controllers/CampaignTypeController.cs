@@ -14,11 +14,10 @@ namespace CRM.Controllers
             _services = services;
         }
         [HttpGet]
-        [ProducesResponseType(typeof(JsonResult), 200)]
         public async Task<IActionResult> GetCampaignTypes()
         {
             var result = await _services.GetAll();
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

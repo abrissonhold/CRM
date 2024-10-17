@@ -20,8 +20,10 @@ namespace Aplication.UseCase
             return listInteraction.Select(listInteraction => new InteractionResponse
             {
                 InteractionID = listInteraction.InteractionID,
-                ProjectID = listInteraction.ProjectID,
-                InteractionTypeID = listInteraction.InteractionTypeID,
+                Interaction = new GenericResponse {
+                Id = listInteraction.InteractionType.Id,
+                Name = listInteraction.InteractionType.Name
+                },
                 Date = listInteraction.Date,
                 Notes = listInteraction.Notes
             }).ToList();
