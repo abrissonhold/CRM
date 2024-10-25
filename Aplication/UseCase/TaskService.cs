@@ -14,7 +14,7 @@ namespace Aplication.UseCase
             _query = query;
         }
 
-        public async Task<List<TasksResponse>> GetAll()
+        public async Task<IEnumerable<TasksResponse>> GetAll()
         {
             List<Tasks> list = (List<Tasks>)await _query.GetAll();
             return list.Select(t => new TasksResponse

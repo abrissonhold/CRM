@@ -13,7 +13,7 @@ namespace Aplication.UseCase
             _query = query;
         }
 
-        public async Task<List<GenericResponse>> GetAll()
+        public async Task<IEnumerable<GenericResponse>> GetAll()
         {
             List<CampaignType> listCampaignType = (List<CampaignType>)await _query.GetAll();
             return listCampaignType.Select(listCampaignType => new GenericResponse

@@ -4,6 +4,6 @@ namespace Aplication.Interfaces
 {
     public interface ICampaignTypeService
     {
-        Task<List<GenericResponse>> GetAll();
+        Task<IEnumerable<GenericResponse>> GetAll();
     }
 }

@@ -13,7 +13,7 @@ namespace Aplication.UseCase
             _query = query;
         }
 
-        public async Task<List<GenericResponse>> GetAll()
+        public async Task<IEnumerable<GenericResponse>> GetAll()
         {
             List<Domain.Entities.TaskStatus> TasksStatus = (List<Domain.Entities.TaskStatus>)await _query.GetAll();
             return TasksStatus.Select(TaskStatus => new GenericResponse

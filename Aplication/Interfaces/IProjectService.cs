@@ -5,8 +5,7 @@ namespace Aplication.Interfaces
 {
     public interface IProjectService
     {
-        public Task<List<ProjectResponse>> GetAll();
-        public Task<ProjectResponse> CreateProject(ProjectRequest project);
+        public Task<ProjectResponseDetail> CreateProject(ProjectRequest project);
         public Task<IEnumerable<ProjectResponse>> GetProjects(string name, int? campaignType, int? clientId, int offset, int size);
         public Task<ProjectResponseDetail> GetById(Guid id);
         public Task<ProjectResponseDetail> GetByName(string Name);

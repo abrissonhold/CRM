@@ -13,7 +13,7 @@ namespace Aplication.UseCase
             _query = query;
         }
 
-        public async Task<List<InteractionResponse>> GetAll()
+        public async Task<IEnumerable<InteractionResponse>> GetAll()
         {
             List<Interaction> listInteraction = (List<Interaction>)await _query.GetAll();
             return listInteraction.Select(listInteraction => new InteractionResponse

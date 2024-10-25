@@ -13,7 +13,7 @@ namespace Aplication.UseCase
             _query = query;
         }
 
-        public async Task<List<UserResponse>> GetAll()
+        public async Task<IEnumerable<UserResponse>> GetAll()
         {
             List<User> users = (List<User>)await _query.GetAll();
             return users.Select(user => new UserResponse

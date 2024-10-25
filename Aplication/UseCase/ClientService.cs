@@ -16,7 +16,7 @@ namespace Aplication.UseCase
             _command = command;
         }
 
-        public async Task<List<ClientResponse>> GetAll()
+        public async Task<IEnumerable<ClientResponse>> GetAll()
         {
             List<Client> clients = (List<Client>)await _query.GetAll();
             return clients.Select(c => new ClientResponse

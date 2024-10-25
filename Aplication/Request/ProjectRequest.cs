@@ -14,7 +14,7 @@ namespace Aplication.Request
     public class ProjectRequestDetail
     {
         public ProjectResponse Project { get; set; }
-        public List<TasksResponse> Tasks { get; set; }
-        public List<InteractionResponse> Interactions { get; set; }
+        public IEnumerable<TasksResponse> Tasks { get; set; }
+        public IEnumerable<InteractionResponse> Interactions { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace CRM.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ProjectResponse>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects(string? name, int? campaignType, int? clientId, int offset = 0, int size = 10)
         {
             List<ProjectResponse> result = (List<ProjectResponse>)await _services.GetProjects(name, campaignType, clientId, offset, size);
@@ -25,7 +26,8 @@ namespace CRM.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(BadRequest), 404)]
+        [ProducesResponseType(typeof(ProjectResponseDetail), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateProject(ProjectRequest project)
         {
             if (!ModelState.IsValid)
@@ -38,17 +40,17 @@ namespace CRM.Controllers
                 return BadRequest(new ApiError { Message = "Project with the same name already exists" });
             }
             var result = await _services.CreateProject(project);
-            return new JsonResult(result) { StatusCode = 201 };
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(JsonResult), 200)]
-        [ProducesResponseType(typeof(BadRequest), 404)]
+        [ProducesResponseType(typeof(ProjectResponseDetail), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new ApiError { Message = "Invalid data" });
+                return BadRequest(new ApiError { Message = "Invalid id" });
             }
             var result = await _services.GetById(id);
             if (result == null)
@@ -59,7 +61,8 @@ namespace CRM.Controllers
         }
 
         [HttpPatch("{id}/interactions")]
-        [ProducesResponseType(typeof(JsonResult), 201)]
+        [ProducesResponseType(typeof(ProjectResponseDetail), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddInteraction(Guid id, InteractionRequest interaction)
         {
             if (!ModelState.IsValid)
@@ -71,7 +74,8 @@ namespace CRM.Controllers
         }
 
         [HttpPatch("{id}/tasks")]
-        [ProducesResponseType(typeof(JsonResult), 201)]
+        [ProducesResponseType(typeof(ProjectResponseDetail), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddTask(Guid id, TasksRequest task)
         {
             if (!ModelState.IsValid)
@@ -83,7 +87,8 @@ namespace CRM.Controllers
         }
 
         [HttpPatch("{id}/tasks/{taskId}")]
-        [ProducesResponseType(typeof(JsonResult), 201)]
+        [ProducesResponseType(typeof(ProjectResponseDetail), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTask(Guid id, Guid taskId, TasksRequest task)
         {
             if (!ModelState.IsValid)

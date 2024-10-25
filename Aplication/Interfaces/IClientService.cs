@@ -5,7 +5,7 @@ namespace Aplication.Interfaces
 {
     public interface IClientService
     {
-        public Task<List<ClientResponse>> GetAll();
+        public Task<IEnumerable<ClientResponse>> GetAll();
         public Task<ClientResponse> CreateClient(ClientRequest client);
     }
 }

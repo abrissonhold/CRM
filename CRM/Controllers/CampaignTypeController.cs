@@ -1,4 +1,5 @@
 ﻿using Aplication.Interfaces;
+using Aplication.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers
@@ -14,6 +15,7 @@ namespace CRM.Controllers
             _services = services;
         }
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<GenericResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCampaignTypes()
         {
             var result = await _services.GetAll();
@@ -21,3 +23,4 @@ namespace CRM.Controllers
         }
     }
 }
+

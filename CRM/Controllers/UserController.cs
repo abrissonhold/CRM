@@ -1,4 +1,5 @@
 ﻿using Aplication.Interfaces;
+using Aplication.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers
@@ -14,7 +15,7 @@ namespace CRM.Controllers
             _services = services;
         }
         [HttpGet]
-        [ProducesResponseType(typeof(JsonResult), 200)]
+        [ProducesResponseType(typeof(IEnumerable<UserResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
             var result = await _services.GetAll();

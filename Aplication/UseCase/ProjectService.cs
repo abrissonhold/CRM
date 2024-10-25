@@ -32,35 +32,6 @@ namespace Aplication.UseCase
             _querytaskstatus = querytaskstatus;
         }
 
-        public async Task<List<ProjectResponse>> GetAll()
-        {
-            List<Project> projects = (List<Project>)await _query.GetAll();
-            return projects.Select(pr => new ProjectResponse
-            {
-                ProjectID = pr.ProjectID,
-                ProjectName = pr.ProjectName,
-                CampaignTypeID = pr.CampaignTypeID,
-                ClientID = pr.ClientID,
-                StartDate = pr.StartDate,
-                EndDate = pr.EndDate,
-                CampaignType = new GenericResponse
-                {
-                    Id = pr.CampaignType.Id,
-                    Name = pr.CampaignType.Name
-                },
-                Client = new ClientResponse
-                {
-                    ClientID = pr.Client.ClientID,
-                    Name = pr.Client.Name,
-                    Email = pr.Client.Email,
-                    Phone = pr.Client.Phone,
-                    Company = pr.Client.Company,
-                    Address = pr.Client.Address
-                }
-            }
-            ).ToList();
-        }
-
         public async Task<IEnumerable<ProjectResponse>> GetProjects(string? name, int? campaignType, int? clientId, int offset, int size)
         {
             List<Project> projects = (List<Project>)await _query.GetProjects(name, campaignType, clientId, offset, size);
@@ -89,7 +60,7 @@ namespace Aplication.UseCase
             }).ToList();
         }
 
-        public async Task<ProjectResponse> CreateProject(ProjectRequest pr)
+        public async Task<ProjectResponseDetail> CreateProject(ProjectRequest pr)
         {
             var existingProject = await _query.GetByName(pr.ProjectName);
             if (existingProject != null)
@@ -114,29 +85,62 @@ namespace Aplication.UseCase
             };
 
             await _command.InsertProject(p);
-            return new ProjectResponse
+            return new ProjectResponseDetail
             {
-                ProjectID = p.ProjectID,
-                ProjectName = p.ProjectName,
-                CampaignTypeID = p.CampaignTypeID,
-                ClientID = p.ClientID,
-                StartDate = p.StartDate,
-                EndDate = p.EndDate,
-                Client = new ClientResponse
+                project = new ProjectResponse
                 {
-                    ClientID = client.ClientID,
-                    Name = client.Name,
-                    Phone = client.Phone,
-                    Email = client.Email,
-                    Company = client.Company,
-                    Address = client.Address,
+                    ProjectID = p.ProjectID,
+                    ProjectName = p.ProjectName,
+                    CampaignTypeID = p.CampaignTypeID,
+                    ClientID = p.ClientID,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    Client = new ClientResponse
+                    {
+                        ClientID = p.Client.ClientID,
+                        Name = p.Client.Name,
+                        Email = p.Client.Email,
+                        Phone = p.Client.Phone,
+                        Company = p.Client.Company,
+                        Address = p.Client.Address,
+                    },
+                    CampaignType = new GenericResponse
+                    {
+                        Id = p.CampaignType.Id,
+                        Name = p.CampaignType.Name
+                    },
                 },
-                CampaignType = new GenericResponse
+                tasks = p.Tasks.Select(t => new TasksResponse
                 {
-                    Id = campaignType.Id,
-                    Name = campaignType.Name
+                    TaskID = t.TaskID,
+                    Name = t.Name,
+                    DueDate = t.DueDate,
+                    ProjectID = t.ProjectID,
+                    User = new UserResponse
+                    {
+                        UserID = t.User.UserID,
+                        Name = t.User.Name,
+                        Email = t.User.Email
+                    },
+                    TasksStatus = new GenericResponse
+                    {
+                        Id = t.TasksStatus.Id,
+                        Name = t.TasksStatus.Name
+                    },
+                }).ToList(),
+                interactions = p.Interactions.Select(i => new InteractionResponse
+                {
+                    InteractionID = i.InteractionID,
+                    Interaction = new GenericResponse
+                    {
+                        Id = i.InteractionType.Id,
+                        Name = i.InteractionType.Name
+                    },
+                    Date = i.Date,
+                    Notes = i.Notes,
                 }
-            };
+                ).ToList()
+            }; ;
         }
 
         public async Task<ProjectResponseDetail> GetById(Guid id)
@@ -167,7 +171,7 @@ namespace Aplication.UseCase
                         Name = p.CampaignType.Name
                     },
                 },
-                tasks = p.Tasks.Select(static t => new TasksResponse
+                tasks = p.Tasks.Select(t => new TasksResponse
                 {
                     TaskID = t.TaskID,
                     Name = t.Name,
@@ -286,6 +290,7 @@ namespace Aplication.UseCase
                     {
                         ClientID = project.Client.ClientID,
                         Name = project.Client.Name,
+                        Email = project.Client.Email,
                         Phone = project.Client.Phone,
                         Company = project.Client.Company,
                         Address = project.Client.Address,
