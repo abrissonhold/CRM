@@ -19,9 +19,9 @@ namespace CRM.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ProjectResponse>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects(string? name, int? campaignType, int? clientId, int offset = 0, int size = 10)
+        public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects(string? name, int? campaign, int? client, int offset = 0, int size = 10)
         {
-            List<ProjectResponse> result = (List<ProjectResponse>)await _services.GetProjects(name, campaignType, clientId, offset, size);
+            List<ProjectResponse> result = (List<ProjectResponse>)await _services.GetProjects(name, campaign, client, offset, size);
             return new JsonResult(result);
         }
 
@@ -30,17 +30,25 @@ namespace CRM.Controllers
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateProject(ProjectRequest project)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ApiError { Message = "Invalid data" });
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiError { Message = "Invalid data" });
+                }
+                var existingProject = await _services.GetByName(project.ProjectName);
+                if (existingProject != null)
+                {
+                    return BadRequest(new ApiError { Message = "Project with the same name already exists" });
+                }
+                var result = await _services.CreateProject(project);
+                return Ok(result);
             }
-            var existingProject = await _services.GetByName(project.ProjectName);
-            if (existingProject != null)
+            catch (Exception e)
             {
-                return BadRequest(new ApiError { Message = "Project with the same name already exists" });
+                var apiError = new ApiError { Message = e.Message };
+                return BadRequest(apiError);
             }
-            var result = await _services.CreateProject(project);
-            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -48,61 +56,93 @@ namespace CRM.Controllers
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ApiError { Message = "Invalid id" });
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiError { Message = "Invalid id" });
+                }
+                var result = await _services.GetById(id);
+                if (result == null)
+                {
+                    return NotFound(new ApiError { Message = "Project not found" });
+                }
+                return new JsonResult(result);
             }
-            var result = await _services.GetById(id);
-            if (result == null)
+            catch (Exception e)
             {
-                return NotFound(new ApiError { Message = "Project not found" });
+                var apiError = new ApiError { Message = e.Message };
+                return BadRequest(apiError);
             }
-            return new JsonResult(result);
         }
 
         [HttpPatch("{id}/interactions")]
-        [ProducesResponseType(typeof(ProjectResponseDetail), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(InteractionResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddInteraction(Guid id, InteractionRequest interaction)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ApiError { Message = "Invalid data" });
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiError { Message = "Invalid data" });
+                }
+                var result = await _services.AddInteraction(id, interaction);
+                return new JsonResult(result);
             }
-            var result = await _services.AddInteraction(id, interaction);
-            return new JsonResult(result);
+            catch (Exception e)
+            {
+                var apiError = new ApiError { Message = e.Message };
+                return BadRequest(apiError);
+            }
         }
 
         [HttpPatch("{id}/tasks")]
-        [ProducesResponseType(typeof(ProjectResponseDetail), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(TasksResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddTask(Guid id, TasksRequest task)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ApiError { Message = "Invalid data" });
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiError { Message = "Invalid data" });
+                }
+                var result = await _services.AddTask(id, task);
+                return new JsonResult(result);
             }
-            var result = await _services.AddTask(id, task);
-            return new JsonResult(result);
+            catch (Exception e)
+            {
+                var apiError = new ApiError { Message = e.Message };
+                return BadRequest(apiError);
+            }
         }
 
         [HttpPatch("{id}/tasks/{taskId}")]
-        [ProducesResponseType(typeof(ProjectResponseDetail), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(InteractionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTask(Guid id, Guid taskId, TasksRequest task)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ApiError { Message = "Invalid data" });
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiError { Message = "Invalid data" });
+                }
 
-            var result = await _services.UpdateTask(id, taskId, task);
-            if (result == null)
+                var result = await _services.UpdateTask(id, taskId, task);
+                if (result == null)
+                {
+                    return NotFound(new ApiError { Message = "Task not found" });
+                }
+
+                return new JsonResult(result);
+            }
+            catch (Exception e)
             {
-                return NotFound(new ApiError { Message = "Task not found" });
+                var apiError = new ApiError { Message = e.Message };
+                return BadRequest(apiError);
             }
-
-            return new JsonResult(result);
         }
     }
 }

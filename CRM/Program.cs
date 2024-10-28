@@ -4,8 +4,6 @@ using Infraestructure.Command;
 using Infraestructure.Persistence;
 using Infraestructure.Query;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -26,16 +26,20 @@ namespace CRM.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(GenericResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ClientResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateClient(ClientRequest client)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(new ApiError { Message = "Invalid data" });
+                var result = await _service.CreateClient(client);
+                return Ok(result);
             }
-            var result = await _service.CreateClient(client);
-            return Ok(result);
+            catch (Exception e)
+            {
+                var apiError = new ApiError { Message = e.Message };
+                return BadRequest(apiError);
+            }
         }
     }
 }

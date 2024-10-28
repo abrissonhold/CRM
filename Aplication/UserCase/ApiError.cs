@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace Aplication.UserCase
+﻿namespace Aplication.UserCase
 {
-    public class ApiError : ModelStateDictionary
+    public class ApiError
     {
-        public required string Message { get; set; }
+        public string? Message { get; set; }
     }
 }
