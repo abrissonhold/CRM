@@ -1,6 +1,7 @@
 ﻿using Aplication.Interfaces;
 using Aplication.Request;
 using Aplication.Response;
+using Aplication.UserCase;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers
@@ -36,6 +37,5 @@ namespace CRM.Controllers
             var result = await _service.CreateClient(client);
             return Ok(result);
         }
-
     }
 }

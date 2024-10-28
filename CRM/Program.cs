@@ -1,9 +1,11 @@
 using Aplication.Interfaces;
-using Aplication.UseCase;
+using Aplication.UserCase;
 using Infraestructure.Command;
 using Infraestructure.Persistence;
 using Infraestructure.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,6 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Configuración de Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

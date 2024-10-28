@@ -1,7 +1,7 @@
 ﻿using Aplication.Interfaces;
 using Aplication.Request;
 using Aplication.Response;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Aplication.UserCase;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.Controllers

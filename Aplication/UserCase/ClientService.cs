@@ -3,7 +3,7 @@ using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
 
-namespace Aplication.UseCase
+namespace Aplication.UserCase
 {
     public class ClientService : IClientService
     {

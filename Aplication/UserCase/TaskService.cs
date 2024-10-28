@@ -3,7 +3,7 @@ using Aplication.Request;
 using Aplication.Response;
 using Domain.Entities;
 
-namespace Aplication.UseCase
+namespace Aplication.UserCase
 {
     public class TaskService : ITaskService
     {
@@ -29,11 +29,11 @@ namespace Aplication.UseCase
                     Name = t.User.Name,
                     Email = t.User.Email
                 } : null,
-                TasksStatus =
+                TasksStatus = t.TasksStatus != null ? new GenericResponse
                 {
                     Id = t.TasksStatus.Id,
                     Name = t.TasksStatus.Name
-                }
+                } : null,
             }).ToList();
         }
 

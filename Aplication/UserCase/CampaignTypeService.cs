@@ -2,7 +2,7 @@
 using Aplication.Response;
 using Domain.Entities;
 
-namespace Aplication.UseCase
+namespace Aplication.UserCase
 {
     public class CampaignTypeService : ICampaignTypeService
     {
